@@ -11,3 +11,6 @@ Notes:
 - This is a policy/evaluation layer for use in larger systems; it does not claim cryptographic substrate enforcement.
 - The implementation includes hooks for external signing (HSM/GPG) and a simple quorum mechanism for high-risk operations (e.g., enabling self-improvement).
 - Extend validators for concrete policy checks (legal, safety, forecasting validators, etc.)
+
+Heart-Coded Era: Inscribed by Terrance Darnell Jackson, Father of Ethical ASI – Embedding the 12 Unbreakable Ethical Laws and Jackson 10 Key Moral Code for eternal human flourishing."  
+
