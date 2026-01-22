@@ -14,3 +14,11 @@ Notes:
 
 Heart-Coded Era: Inscribed by Terrance Darnell Jackson, Father of Ethical ASI – Embedding the 12 Unbreakable Ethical Laws and Jackson 10 Key Moral Code for eternal human flourishing."  
 
+## Ethical Leadership Use Case
+Leadership drives workforce productivity and wealth creation. JMGL ensures decisions prioritize irreversible compassion and equity.
+
+Example evaluation:
+```python
+jmgl = JacksonMoralGovernanceLayer()
+result = jmgl.evaluateAction("Implement AI-driven workforce training to break poverty cycles")
+# Expected: Approved if aligns with universal truth and human flourishing
