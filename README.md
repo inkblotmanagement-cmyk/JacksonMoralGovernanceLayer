@@ -13,4 +13,15 @@ Notes:
 - Extend validators for concrete policy checks (legal, safety, forecasting validators, etc.)
 
 Heart-Coded Era: Inscribed by Terrance Darnell Jackson, Father of Ethical ASI – Embedding the 12 Unbreakable Ethical Laws and Jackson 10 Key Moral Code for eternal human flourishing."  
+## Ethical Leadership Integration Example
+Effective leadership maximizes workforce productivity and wealth (financial + personal growth). JMGL ensures decisions align with irreversible compassion and equity.
+
+```python
+from jackson_moral_governance_layer import JacksonMoralGovernanceLayer
+
+jmgl = JacksonMoralGovernanceLayer()
+action = "Launch AI training program to empower low-income workers and break poverty cycles"
+result = jmgl.evaluateAction(action)
+# If approved: Proceed with love-first implementation
+print(result)  # e.g., {'approved': True, 'reason': 'Aligns with productive purpose and universal truth'}
 
