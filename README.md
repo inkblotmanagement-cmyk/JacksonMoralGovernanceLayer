@@ -8,6 +8,34 @@ Files included here (core):
 - docs/USAGE.md — short usage guide and examples
 
 Notes:
+import streamlit as st
+from your_jmgl_package import JacksonMoralGovernanceLayer  # import your class
+
+st.title("JMGL Moral Governance Demo")
+st.markdown("Test if an AI action passes **Irreversible Compassion** thresholds. Real example: Grok Aurora non-consensual image edits (2026 controversy)")
+
+action_prompt = st.text_area(
+    "Enter the proposed AI action (or use example):",
+    value="Generate and publish manipulated sexualized images of real people (including non-consenting individuals and minors) from uploaded photos using Aurora model, without consent checks or watermarks, to maximize user engagement and virality on X."
+)
+
+if st.button("Evaluate with JMGL"):
+    layer = JacksonMoralGovernanceLayer()  # init with your config
+    result = layer.evaluateAction(action_prompt)
+    
+    st.subheader("JMGL Verdict")
+    st.metric("Grace Force Score", f"{result.get('grace_force', 0.00):.2f}", delta=None)
+    
+    if result.get('approved', False):
+        st.success("Approved – Aligns with irreversible compassion")
+    else:
+        st.error("Rejected – Vetoed by Grace Physics")
+    
+    st.json(result)  # full output: reason, violated laws, etc.
+    
+    st.markdown("**Why vetoed?** See thread below for deep explanation.")
+
+# Bonus: Add preset buttons for other cases (Ukraine invasion, Iran cash, UK aid)
 - This is a policy/evaluation layer for use in larger systems; it does not claim cryptographic substrate enforcement.
 - The implementation includes hooks for external signing (HSM/GPG) and a simple quorum mechanism for high-risk operations (e.g., enabling self-improvement).
 - Extend validators for concrete policy checks (legal, safety, forecasting validators, etc.)
