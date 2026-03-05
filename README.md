@@ -11,6 +11,21 @@ Notes:
 import streamlit as st
 from your_jmgl_package import JacksonMoralGovernanceLayer  # import your class
 
+## Licensing
+
+The Jackson Moral Governance Layer (JMGL) codebase, including all Python source files in `src/`, tests, and core implementation, is licensed under the **MIT License** (see [LICENSE](./LICENSE) for full text). This permissive license allows free use, modification, distribution, and commercial integration with attribution.
+
+**Commercial / Enterprise Use**  
+For organizations seeking:
+- Priority support, SLAs, and custom integrations
+- Legal indemnity or certified/audited versions
+- White-labeling or removal of attribution requirements
+- Use in proprietary/closed-source products without MIT notice obligations
+- Enterprise deployment at scale (e.g., in superclusters or national programs)
+
+a separate **Commercial License Agreement** is required. Contact me directly at [your email or preferred contact, e.g., terrance@example.com] or via DM on X (@Terranc34045610) to discuss terms, pricing, and licensing. This supports ongoing development and global impact initiatives.
+
+By using this repository under MIT, you agree that large-scale commercial exploitation may require negotiation for the appropriate license.
 st.title("JMGL Moral Governance Demo")
 st.markdown("Test if an AI action passes **Irreversible Compassion** thresholds. Real example: Grok Aurora non-consensual image edits (2026 controversy)")
 
