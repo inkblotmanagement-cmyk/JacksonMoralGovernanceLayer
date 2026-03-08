@@ -178,3 +178,48 @@ git commit -m "Repo Rush submission: README + 2-line demo + 3 test prompts + sim
 git branch -M main
 git remote add origin https://github.com/YOURUSERNAME/YOUR-REPO.git
 git push -u origin main
+
+# MOEAS – Mindful Oracle Ethical Artificial Superintelligence Workforce App
+
+**MOEAS** is an ethical, AI-governed workforce upskilling platform delivering automated **Diplomas in AI Literacy** and **Financial Well-being**. Built with heart-coded governance (via the open-source Jackson Moral Governance Layer – JMGL with Grace Physics), it ensures equitable, non-exploitative content and protected flourishing — especially designed to help reduce poverty in low-income countries.
+
+This repository contains a **production-ready full-stack starter** (MERN-inspired) that you can extend with personalized diploma content, LLM integrations (e.g., ethical AI tutors), progress tracking, certificates, and more.
+
+## Core Philosophy
+- **Presence & Action**: "The present you are in" – users act now with available tools.
+- **Ethical Guarantee**: JMGL vetoes harm/exploitation; Grace Physics enforces compassion as moral curvature.
+- **Impact Goal**: Scalable pathway out of poverty through mindset, skills, and ethical wealth-building.
+
+## Features (Current Starter)
+- User authentication (register/login with JWT)
+- Protected dashboard
+- Diploma listing (categories: AI Literacy, Financial Well-being)
+- MongoDB backend for users & diploma content
+- Responsive Tailwind CSS frontend
+- Dockerized for easy deployment
+
+## Planned / Extendable Features
+- Personalized learning paths
+- Progress tracking & completion certificates
+- Ethical AI tutor integration (via governed LLM calls)
+- Multilingual support for Global South
+- Payment/subscription for premium diplomas (freemium model)
+- Integration with JMGL/Grace Physics evaluation layer
+
+## Tech Stack
+- **Frontend**: React 19 (with hooks) + Vite + TypeScript + Tailwind CSS + React Router
+- **Backend**: Node.js + Express + TypeScript + JWT auth + Mongoose (MongoDB)
+- **Database**: MongoDB (Atlas recommended for production)
+- **Deployment**: Docker + docker-compose (also Vercel/Render/Netlify/Railway friendly)
+
+## Quick Start (Local Development)
+
+1. **Prerequisites**
+   - Node.js 20+ / 22
+   - MongoDB (local or Atlas free tier)
+   - Git
+
+2. **Clone & Install**
+   ```bash
+   git clone <your-repo-url> moeas-app
+   cd moeas-app
