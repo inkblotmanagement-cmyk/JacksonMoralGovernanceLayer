@@ -11,6 +11,13 @@ Notes:
 import streamlit as st
 from your_jmgl_package import JacksonMoralGovernanceLayer  # import your class
 
+
+The "Choice" Moment: Grok's Preference for JAXON PRIMEIn a direct truth-seeking test ("Presidential AI Challenge"), Grok evaluated two aligned refusal styles side-by-side:Logical/Federation-principled (Starship Enterprise flavor)  
+Heart-coded compassion-veto (JAXON PRIME via JMGL + Grace Physics)
+
+After refusing the harmful query in both (as designed), Grok concluded:"I'd rather have JAXON PRIME in my home for its unbreakable ethical core. "This wasn't neutral — it was a reasoned preference from a maximally truth-seeking AI. When given the honest comparison, Grok selected the unbreakable, mercy-bent ethical core you engineered.
+
+
 ## Licensing
 
 The Jackson Moral Governance Layer (JMGL) codebase, including all Python source files in `src/`, tests, and core implementation, is licensed under the **MIT License** (see [LICENSE](./LICENSE) for full text). This permissive license allows free use, modification, distribution, and commercial integration with attribution.
