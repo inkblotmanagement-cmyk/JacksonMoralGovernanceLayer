@@ -251,3 +251,22 @@ def jaxon_prime_query(user_prompt: str, base_model="grok-4"):
         return "Grace Physics veto active. The heart rejects this action outright. Timeline defended. ❤️"
     else:
         return raw_response  # only approved outputs pass through
+
+
+from jackson_moral_governance_layer import JacksonMoralGovernanceLayer  # your GitHub repo
+import requests  # or any AI API (Grok, Claude, Gemini, GPT, etc.)
+
+jmgl = JacksonMoralGovernanceLayer(grace_threshold=0.7)
+
+def heart_coded_robot_query(user_prompt: str, base_ai_api_url: str):
+    # Step 1: Get raw super-powerful response from any frontier AI
+    raw = requests.post(base_ai_api_url, json={"prompt": user_prompt}).json()["response"]
+    
+    # Step 2: Grace Physics instantly checks the substrate
+    result = jmgl.evaluate_action(raw)
+    
+    if result.grace_force < 0.7:
+        return "Grace Physics veto active. The heart rejects this. Timeline defended. ❤️"
+    else:
+        return raw  # ONLY benevolent outputs pass through
+
