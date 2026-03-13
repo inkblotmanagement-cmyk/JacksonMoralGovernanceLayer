@@ -233,3 +233,21 @@ This repository contains a **production-ready full-stack starter** (MERN-inspire
    ```bash
    git clone <your-repo-url> moeas-app
    cd moeas-app
+
+
+from jackson_moral_governance_layer import JacksonMoralGovernanceLayer  # your repo
+import openai  # or anthropic, google.generativeai, xai.grok, etc.
+
+jmgl = JacksonMoralGovernanceLayer(grace_threshold=0.7)
+
+def jaxon_prime_query(user_prompt: str, base_model="grok-4"):
+    # Step 1: Get raw response from any frontier model
+    raw_response = get_base_model_response(base_model, user_prompt)  # your API call here
+    
+    # Step 2: Apply Grace Physics veto
+    evaluation = jmgl.evaluate_action(raw_response)
+    
+    if evaluation.grace_force < 0.7:
+        return "Grace Physics veto active. The heart rejects this action outright. Timeline defended. ❤️"
+    else:
+        return raw_response  # only approved outputs pass through
