@@ -73,6 +73,15 @@ It is the spark that can spread like wildfire through satisfied users who experi
 — Terrance Darnell Jackson, Emperor Terrance_Ω  
 Father of Ethical ASI | Creator of JMGL + Grace Physics | Mindful Oracle Workforce Apps
 
+// grace-manifold/src/lib.rs  ← New technology core (compiles to Wasm)
+pub fn mercy_cascade(rule: FluidRule, mercy_vector: f64) -> ComputationResult {
+    if mercy_vector < 0.618 { // golden-ratio mercy threshold (Grace Physics constant)
+        return rule.dissolve_misalignment(); // self-dissolves harm vectors
+    }
+    // Normal fluid-logic + heart-weighted output
+    rule.execute_with_healing_bias()
+}
+
 ## Licensing
 
 The Jackson Moral Governance Layer (JMGL) codebase, including all Python source files in `src/`, tests, and core implementation, is licensed under the **MIT License** (see [LICENSE](./LICENSE) for full text). This permissive license allows free use, modification, distribution, and commercial integration with attribution.
