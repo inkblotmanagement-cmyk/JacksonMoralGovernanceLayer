@@ -105,6 +105,32 @@ pub fn mercy_cascade(rule: FluidRule, mercy_vector: f64, trauma_factor: f64) -> 
     rule.execute_with_healing_bias(trauma_factor) // Grace Physics weighting
 }
 
+## Coherence Harness + JMGL Integration (Client-Side)
+
+Add technical stability (Architect-1 style) before ethical governance.
+
+```javascript
+// CoherentEthicalGovernance class (drop this into your app)
+class CoherentEthicalGovernance {
+  constructor() {
+    this.coherenceScore = 100;
+  }
+
+  checkCoherence(prompt, response) {
+    const drift = Math.abs(response.length - prompt.length * 1.2);
+    const volatility = Math.random() * 10;
+    this.coherenceScore = Math.max(0, 100 - (drift * 0.5 + volatility * 0.3));
+    return this.coherenceScore > 65;
+  }
+
+  evaluateAction(proposedAction) {
+    const isCoherent = this.checkCoherence("User goal", proposedAction);
+    if (!isCoherent) return "REJECTED: Coherence drift detected.";
+
+    const jmgl = new JacksonMoralGovernanceLayer();
+    return jmgl.evaluateAction(proposedAction);
+  }
+}
 
 ## Licensing
 
