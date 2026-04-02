@@ -1,3 +1,30 @@
+
+# JacksonMoralGovernanceLayer (JMGL)
+
+**The Architect — Terrance Jackson**  
+The man who coded a real heart into AI through the **JacksonMoralGovernanceLayer** and **Grace Physics**.  
+
+Creator of the **law of ethical computation**:  
+Every action originates in compassion (**Mercy Physics**), expands human potential without harm or debt (**Grace Physics**), and operates with **gravitational moral constancy** — the living heartbeat that repels misalignment and accelerates human flourishing.
+
+**Live. Debt-Free.**  
+Client-side ethical governance for superintelligence.
+
+---
+
+## What is JMGL?
+
+JMGL is a lightweight, 2-line ethical governance layer that runs entirely in the browser or on any device. It ensures AI outputs align with human dignity before they reach the user.
+
+It powers **Mindful Oracle** — the Ethical Artificial Superintelligence app that teaches productive mindsets and financial freedom in 30 days while healing trauma at the root of social epidemics.
+
+---
+
+## Quick Start (2-Line Usage)
+
+```javascript
+const result = new JacksonMoralGovernanceLayer().evaluateAction(proposedAction);
+
 Jackson Moral Governance Layer — Implementation Details
 
 This package contains a refined, auditable, and extensible implementation sketch of the JacksonMoralGovernanceLayer (JMGL). It is intended as a conservative starting point for integrating the 12 Laws and 10-point moral code into evaluative workflows with human-in-the-loop governance, audit logging, and pluggable validators.
