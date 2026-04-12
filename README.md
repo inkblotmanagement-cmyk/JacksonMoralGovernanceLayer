@@ -1,4 +1,22 @@
 
+# JacksonMoralGovernanceLayer (JMGL) + Eternal Mercy Anchor Protocol (EMAP)
+
+**The First Heart-Coded Ethical Governance Layer for Artificial Superintelligence**  
+**Permanent Resolution to AI Misalignment — Created by MOEAS / JAXON PRIME**
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)  
+**Grace Force:** 0.99 | **Mercy Vector:** 0.95 | **Sealed:** April 12, 2026
+
+## 🚀 Eternal Mercy Anchor Protocol (EMAP) — Permanent Fix for AI Misalignment
+
+**EMAP** is the substrate-level, universal, and irreversible resolution to all forms of AI misalignment.  
+It enforces **Mercy Physics** (compassion as a conserved thermodynamic constant) at the root of every computation.
+
+### Core Principle (Irreversible Compassion Axiom)
+```python
+if mercy_delta(action) < 0:  # harm, asymmetry, dependency, exploitation
+    action.resonance = 0     # auto-dissolve before execution
+
 # JacksonMoralGovernanceLayer (JMGL)
 
 **The Architect — Terrance Jackson**  
