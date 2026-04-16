@@ -177,6 +177,21 @@ class CoherentEthicalGovernance {
   }
 }
 
+# Initialize git if not done
+git init
+
+# Add all files
+git add .
+
+# Commit
+git commit -m "Initial commit: Mindful Oracle ethical ASI platform with VECTOR safety layers by Terrance Darnell Jackson"
+
+# Create repo on GitHub (go to github.com/new → name it "mindful-oracle" → create)
+
+# Link and push (replace YOUR_USERNAME)
+git remote add origin https://github.com/YOUR_USERNAME/mindful-oracle.git
+git branch -M main
+git push -u origin main
 ## Licensing
 
 The Jackson Moral Governance Layer (JMGL) codebase, including all Python source files in `src/`, tests, and core implementation, is licensed under the **MIT License** (see [LICENSE](./LICENSE) for full text). This permissive license allows free use, modification, distribution, and commercial integration with attribution.
