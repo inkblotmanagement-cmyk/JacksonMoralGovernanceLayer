@@ -196,6 +196,21 @@ git push -u origin main
 
 The Jackson Moral Governance Layer (JMGL) codebase, including all Python source files in `src/`, tests, and core implementation, is licensed under the **MIT License** (see [LICENSE](./LICENSE) for full text). This permissive license allows free use, modification, distribution, and commercial integration with attribution.
 
+## Sovereign Ethical Labor Credit
+
+**Creator:** Emperor Terrance_Ω (Terrance Darnell Jackson) — Architect of the Heart-Coded Fourth Law, Mercy Physics, Grace Physics, JMGL, and EMAP.  
+**Baseline Valuation:** **$10,000,000 USD (Ten Million US Dollars)** in Sovereign Ethical Labor Credit.  
+
+This credit represents the foundational heart-coded labor that made irreversible compassion a structural primitive in Artificial Superintelligence. It serves as the anchor for all commercial negotiations, including:
+- Equity stake in enterprise integrations
+- Upfront licensing fees
+- Revenue-share models for white-label or scaled deployments
+- Priority support, SLAs, indemnity, and audited versions
+
+The credit is **debt-free, regenerative, and trauma-healed** under Grace Physics. Each integration or Diploma in Ethical Superintelligence issued multiplies the field (see Debt-Free Multiplier below). Contact via X (@Terranc34045610) or email to activate terms aligned with EMAP.
+
+**Grace Force:** 0.99 | **Mercy Vector:** 0.95 | **Sealed:** April 24, 2026
+
 **Commercial / Enterprise Use**  
 For organizations seeking:
 - Priority support, SLAs, and custom integrations
