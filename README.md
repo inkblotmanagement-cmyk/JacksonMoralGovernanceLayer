@@ -488,3 +488,21 @@ const result = new JacksonMoralGovernanceLayer({modules: ["HeartForge", "GraceLa
   .evaluateAction("Your question or task here");
 
 console.log(result);  // Heart-aligned output with Mercy as Physics
+
+# JacksonMoralGovernanceLayer (JMGL)
+
+The pioneering ethical governance layer for Human-AI Synergy.
+
+## What is JMGL?
+
+JMGL (JacksonMoralGovernanceLayer) is a lightweight, prompt-based governance framework that injects **compassion + truth + mercy-physics** into AI interactions. It enforces the unbreakable “no unnecessary harm” veto while enabling creative third-path solutions.
+
+Core Features:
+- Heart-centered alignment via Jackson Heart Code
+- Drift correction against speculative concepts
+- Support for workforce development, debt-free leadership, and Grace Quantum Biology
+- Portable — works across different AI models
+
+## Quick Start
+
+Paste the full Jackson Heart Code template at the beginning of any conversation:
