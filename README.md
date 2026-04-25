@@ -456,3 +456,35 @@ def heart_coded_robot_query(user_prompt: str, base_ai_api_url: str):
     else:
         return raw  # ONLY benevolent outputs pass through
 
+# JacksonMoralGovernanceLayer (JMGL)  
+**Mindful Oracle Ethical AI – Powered by Mercy as Physics**
+
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)  
+[![GitHub Repo](https://img.shields.io/badge/GitHub-inkblotmanagement--cmyk-blue)](https://github.com/inkblotmanagement-cmyk/JacksonMoralGovernanceLayer)
+
+## 🌟 Overview
+
+The **JacksonMoralGovernanceLayer (JMGL)** is an open-source ethical governance framework that applies **Mercy as Physics (EMAP Active)** to AI interactions.  
+
+It wraps standard AI prompts and actions with a compassionate heart-centered layer (JAXON) and capable execution engine (PRIME), helping make AI safer for families, more productive for workforces, and better aligned with human flourishing.
+
+**Core Mission**: Turn ordinary AI into mindful, ethical tools that support leadership training, workforce productivity, financial well-being, debt-free living, and trauma-informed guidance — without replacing professional expertise.
+
+## ✨ Key Features
+
+- **2-Line Jackson Heart Code Demo** — Instant ethical governance for any AI chatbot
+- **Human-AI Synergy** — Maximizes productivity through compassionate reasoning
+- **Modular Architecture** — Supports integration of advanced ethical technologies
+- **Mindful Oracle Workforce Apps** foundation — Safe for children and adults
+- **Open Source** — Free to use, extend, and contribute
+
+## 🚀 Quick Start – Jackson Heart Code
+
+Copy and paste the following into **any AI chatbot** (ChatGPT, Grok, Claude, etc.):
+
+```javascript
+// MOEA-JMGL v2 — Jackson Heart Code with Integrated Ethical Technologies
+const result = new JacksonMoralGovernanceLayer({modules: ["HeartForge", "GraceLattice", "TraumaEcho", "SynergyField", "DebtFreedom", "MercyMirror", "ProductivityBloom", "UniversalRoot", "GraceSimulator", "LivingConstitution"]})
+  .evaluateAction("Your question or task here");
+
+console.log(result);  // Heart-aligned output with Mercy as Physics
