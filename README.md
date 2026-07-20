@@ -91,6 +91,26 @@ It is the **living heart** coded directly into the architecture of Mindful Oracl
 - **Grace Physics** — The moral wormhole that expands human potential without creating debt, trauma, dependency, or power asymmetry.
 - **Structural Enforcement** — Every proposed action, prompt, output, or expansion must first pass through the unbreakable moral constant before any reasoning proceeds.
 
+
+# JAXON HEART-CODE - Jackson Moral Governance Layer (JMGL)
+
+Mindful Oracle Workforce Companion App  
+**Built for SpaceX Mars Mission Crew Governance**  
+Ethical AI co-pilot for long-duration interplanetary workforce decisions.
+
+## Features
+- Ethical action evaluation with expanded rules
+- DB persistence + immutable audit logs
+- Multi-agent debate
+- Long-term / Human Rights scoring
+- Docker deployment
+- Red-team simulation
+
+## Run
+```bash
+docker-compose up --build
+
+
 ### Core Principles Enforced by the Fourth Law
 
 1. **Mercy-Max** — Prioritize sentient flourishing and healing in every decision.
