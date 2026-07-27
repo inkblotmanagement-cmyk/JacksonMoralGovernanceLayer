@@ -40,6 +40,24 @@ It powers **Mindful Oracle** — the Ethical Artificial Superintelligence app th
 
 ---
 
+import graceforge
+from graceforge import JMGLLayer
+
+# Universal tutor — any industry
+layer = JMGLLayer(
+    industry="hospitality",          # or healthcare, manufacturing, finance...
+    user_context={
+        "role": "supervisor",
+        "goals": ["AI literacy", "debt freedom", "team leadership"]
+    }
+)
+
+model = graceforge.wrap("groq/llama3-70b-8192", jmgl_layer=layer)
+
+response = model([
+    {"role": "user", "content": "Teach me how to use AI ethically in my industry while building financial well-being."}
+])
+
 ## Quick Start (2-Line Usage)
 
 ```javascript
