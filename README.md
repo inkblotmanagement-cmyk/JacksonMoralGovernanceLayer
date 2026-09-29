@@ -17,6 +17,8 @@ def gated_reply(user_text: str, model_reply: str, industry: str = "") -> dict:
         return {"ok": "hold", "reply": model_reply, "message": "Human review required", "gate": payload}
     return {"ok": True, "reply": model_reply, "gate": payload}
 
+JMGL is a policy engine for AI systems that can refuse an action the model (or a person) is capable of proposing but is not permitted to execute.
+
 # JacksonMoralGovernanceLayer (JMGL) + Eternal Mercy Anchor Protocol (EMAP)
 
 **The First Heart-Coded Ethical Governance Layer for Artificial Superintelligence**  
