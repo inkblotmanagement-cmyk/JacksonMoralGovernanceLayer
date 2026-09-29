@@ -5,3 +5,4 @@ __pycache__/
 audit*.jsonl
 eval/cases_100k.jsonl
 eval/run_progress.log
+eval/run_progress_gate_*.log

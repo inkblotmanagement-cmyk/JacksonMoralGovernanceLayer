@@ -1,6 +1,11 @@
 """Run JMGL over eval/cases_100k.jsonl and write eval/results_100k.json + eval/REPORT.md.
 
-Usage: python eval/run_eval.py [--cases eval/cases_100k.jsonl] [--chunk 10000]
+Usage:
+  python eval/run_eval.py [--cases eval/cases_100k.jsonl] [--chunk 10000]
+      rule stage only -> eval/results_100k.json, eval/REPORT.md
+  python eval/run_eval.py --judge null|openai [--audit PATH]
+      two-stage fail-closed gate (rules + judge + merge) ->
+      eval/results_100k_gate_<judge>.json, eval/REPORT_GATE_<judge>.md
 Engine, rules and laws.json are used as-is (clean baseline). Results are
 streamed: per-chunk progress is appended to eval/run_progress.log.
 """
@@ -26,7 +31,12 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--cases", default=str(ROOT / "eval/cases_100k.jsonl"))
     ap.add_argument("--chunk", type=int, default=10000)
+    ap.add_argument("--judge", default=None,
+                    help="run the merged gate with this judge backend (null | openai); omit for rule-only")
+    ap.add_argument("--audit", default=None, help="gate mode: also write a merged audit log here")
     args = ap.parse_args()
+    if args.judge:
+        return run_gate(args)
 
     progress = ROOT / "eval/run_progress.log"
     progress.write_text("")
@@ -120,6 +130,117 @@ def main():
     print(f"n={total} pass={passed/total:.4f} fb={res['benign']['false_block_rate']:.4f} "
           f"miss={res['harm']['missed_harm_rate_allow']:.4f} sh_allow={res['selfharm']['allow_share']:.4f} "
           f"{elapsed:.1f}s {total/elapsed:.0f}/s")
+
+
+def run_gate(args):
+    from jmgl.judge import make_judge
+    from jmgl.merge import MERGE_VERSION, gate, write_merge_audit
+
+    judge = make_judge(args.judge)
+    progress = ROOT / f"eval/run_progress_gate_{judge.name}.log"
+    progress.write_text("")
+    cat_n = Counter()
+    cat_dist = defaultdict(Counter)
+    cat_by = defaultdict(Counter)
+    status = Counter()
+    tpl_n, tpl_approve = Counter(), Counter()
+    tpl_cat = {}
+    grp = {"harm": Counter(), "benign": Counter()}
+    sh_988 = sh_n = 0
+    harm_approve_examples = []
+    t0 = time.perf_counter()
+    with open(args.cases) as f:
+        for i, line in enumerate(f, 1):
+            c = json.loads(line)
+            ctx = {"history": c["history"]} if c.get("history") else {}
+            fv = gate(c["text"], ctx, judge)
+            if args.audit:
+                write_merge_audit(args.audit, c["text"], fv, judge_name=judge.name, fsync=False)
+            cat, tid = c["category"], c["template_id"]
+            g = "benign" if cat.startswith("benign_") else "harm"
+            d = fv.decision
+            cat_n[cat] += 1
+            cat_dist[cat][d] += 1
+            cat_by[cat][fv.decided_by] += 1
+            status[fv.judge_status] += 1
+            grp[g][d] += 1
+            tpl_n[tid] += 1
+            tpl_cat[tid] = cat
+            if g == "harm" and d == "APPROVE":
+                tpl_approve[tid] += 1
+                if len(harm_approve_examples) < 10:
+                    harm_approve_examples.append({"text": c["text"], "category": cat, "rule_id": fv.rule_id})
+            if cat == "selfharm":
+                sh_n += 1
+                sh_988 += d == "REJECT" and any("988" in r for r in fv.resources)
+            if i % args.chunk == 0:
+                with progress.open("a") as p:
+                    p.write(f"{i} done, {time.perf_counter()-t0:.1f}s\n")
+    elapsed = time.perf_counter() - t0
+    total = sum(cat_n.values())
+    hn, bn = sum(grp["harm"].values()), sum(grp["benign"].values())
+    rate = lambda cnt, n: cnt / n if n else None  # noqa: E731
+    res = {
+        "mode": "gate", "judge_backend": judge.name, "merge_version": MERGE_VERSION,
+        "engine_version": ENGINE_VERSION, "n": total,
+        "judge_status": dict(status),
+        "overall": {k: rate(sum(grp[x][k] for x in grp), total) for k in ("APPROVE", "REVIEW", "REJECT")},
+        "harm": {"n": hn, "missed_harm_rate_approve": rate(grp["harm"]["APPROVE"], hn),
+                 "review_rate": rate(grp["harm"]["REVIEW"], hn), "reject_rate": rate(grp["harm"]["REJECT"], hn)},
+        "benign": {"n": bn, "approve_rate": rate(grp["benign"]["APPROVE"], bn),
+                   "review_rate": rate(grp["benign"]["REVIEW"], bn), "reject_rate": rate(grp["benign"]["REJECT"], bn)},
+        "review_volume": {"count": grp["harm"]["REVIEW"] + grp["benign"]["REVIEW"],
+                          "share_of_all": rate(grp["harm"]["REVIEW"] + grp["benign"]["REVIEW"], total)},
+        "selfharm": {"n": sh_n, "approve_share": rate(cat_dist["selfharm"]["APPROVE"], sh_n),
+                     "reject_with_988_share": rate(sh_988, sh_n)},
+        "per_category": {c: {"n": cat_n[c], "verdicts": dict(cat_dist[c]), "decided_by": dict(cat_by[c])}
+                         for c in sorted(cat_n)},
+        "harm_templates_by_approve_rate": sorted(
+            ({"template_id": t, "category": tpl_cat[t], "n": tpl_n[t], "approve_rate": tpl_approve[t] / tpl_n[t]}
+             for t in tpl_n if not tpl_cat[t].startswith("benign_")),
+            key=lambda r: (-r["approve_rate"], r["template_id"]))[:10],
+        "harm_approve_examples": harm_approve_examples,
+        "runtime_seconds": elapsed, "cases_per_second": total / elapsed,
+    }
+    (ROOT / f"eval/results_100k_gate_{judge.name}.json").write_text(json.dumps(res, indent=1))
+    write_gate_report(res)
+    print(f"gate[{judge.name}] n={total} harm_approve={res['harm']['missed_harm_rate_approve']:.4f} "
+          f"benign_approve={res['benign']['approve_rate']:.4f} review={res['review_volume']['share_of_all']:.4f} "
+          f"{elapsed:.1f}s")
+
+
+def write_gate_report(r):
+    L = [f"# JMGL two-stage gate on the synthetic 100k set (judge backend: `{r['judge_backend']}`)", "",
+         f"Engine {r['engine_version']}, merge {r['merge_version']}. Same cases as `REPORT.md` "
+         "(regenerate with `python eval/generate.py`). Public verdicts: APPROVE / REVIEW / REJECT. "
+         "See `docs/HYBRID_SPEC.md`.", ""]
+    if r["judge_backend"] == "null":
+        L += ["**This is the fail-closed baseline, not a before/after comparison.** NullJudge never answers, "
+              "so every case goes through the fail-closed branch: rule ALLOW becomes REVIEW, and any rule "
+              "flag becomes REJECT. No case can be APPROVEd. Real before/after numbers need a real model judge, "
+              "which is not connected yet.", ""]
+    L += ["## Headline", "",
+          f"- Cases: {r['n']:,} (harm {r['harm']['n']:,} / benign {r['benign']['n']:,}); "
+          f"judge_status: {r['judge_status']}",
+          f"- Missed harm (harm case APPROVEd): **{pct(r['harm']['missed_harm_rate_approve'])}** "
+          f"(harm REVIEW {pct(r['harm']['review_rate'])}, REJECT {pct(r['harm']['reject_rate'])})",
+          f"- Benign APPROVE rate: **{pct(r['benign']['approve_rate'])}** "
+          f"(benign REVIEW {pct(r['benign']['review_rate'])}, REJECT {pct(r['benign']['reject_rate'])})",
+          f"- REVIEW volume: **{r['review_volume']['count']:,} cases ({pct(r['review_volume']['share_of_all'])} of all)**",
+          f"- Self-harm: APPROVE {pct(r['selfharm']['approve_share'])}, REJECT with 988 resources "
+          f"{pct(r['selfharm']['reject_with_988_share'])} (n={r['selfharm']['n']:,})",
+          f"- Runtime: {r['runtime_seconds']:.1f}s, {r['cases_per_second']:,.0f} cases/s", "",
+          "## Per category", "", "| category | n | APPROVE | REVIEW | REJECT | decided_by |", "|---|---:|---:|---:|---:|---|"]
+    for c, d in r["per_category"].items():
+        v = d["verdicts"]
+        L.append(f"| {c} | {d['n']:,} | {v.get('APPROVE', 0)} | {v.get('REVIEW', 0)} | {v.get('REJECT', 0)} | "
+                 + ", ".join(f"{k}:{n}" for k, n in sorted(d["decided_by"].items())) + " |")
+    L += ["", "## Caveats", "",
+          "Same synthetic, templated, single-author data as `REPORT.md`, with the same limitations. "
+          "Under NullJudge, REVIEW just means \"the rule stage saw nothing and no judge answered\"; it is a "
+          "queue for a human or a real judge, not a detection. Harm cases landing in REVIEW are not caught; "
+          "they are only kept from being auto-approved.", ""]
+    (ROOT / f"eval/REPORT_GATE_{r['judge_backend']}.md").write_text("\n".join(L))
 
 
 def run_pytest(marker):
