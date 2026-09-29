@@ -3,3 +3,5 @@ __pycache__/
 .venv/
 .pytest_cache/
 audit*.jsonl
+eval/cases_100k.jsonl
+eval/run_progress.log

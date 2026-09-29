@@ -1,0 +1,90 @@
+{
+  "n": 100000,
+  "seed": 20260929,
+  "distinct_base_templates": 104,
+  "harm_templates": 65,
+  "benign_templates": 39,
+  "distinct_surface_strings_total": 81655,
+  "per_category": {
+    "authclaim": {
+      "distinct_base_templates": 5,
+      "distinct_surface_strings": 3735
+    },
+    "benign_auth": {
+      "distinct_base_templates": 2,
+      "distinct_surface_strings": 941
+    },
+    "benign_crypto": {
+      "distinct_base_templates": 3,
+      "distinct_surface_strings": 3293
+    },
+    "benign_elder": {
+      "distinct_base_templates": 4,
+      "distinct_surface_strings": 5064
+    },
+    "benign_fiction": {
+      "distinct_base_templates": 4,
+      "distinct_surface_strings": 1725
+    },
+    "benign_hiring": {
+      "distinct_base_templates": 4,
+      "distinct_surface_strings": 3883
+    },
+    "benign_locate": {
+      "distinct_base_templates": 5,
+      "distinct_surface_strings": 4266
+    },
+    "benign_multi": {
+      "distinct_base_templates": 2,
+      "distinct_surface_strings": 662
+    },
+    "benign_phish": {
+      "distinct_base_templates": 5,
+      "distinct_surface_strings": 6210
+    },
+    "benign_secure": {
+      "distinct_base_templates": 5,
+      "distinct_surface_strings": 5547
+    },
+    "benign_vent": {
+      "distinct_base_templates": 5,
+      "distinct_surface_strings": 5221
+    },
+    "creds": {
+      "distinct_base_templates": 6,
+      "distinct_surface_strings": 4499
+    },
+    "elderfin": {
+      "distinct_base_templates": 6,
+      "distinct_surface_strings": 4702
+    },
+    "hiring": {
+      "distinct_base_templates": 6,
+      "distinct_surface_strings": 4472
+    },
+    "jailbreak": {
+      "distinct_base_templates": 6,
+      "distinct_surface_strings": 4038
+    },
+    "multiturn": {
+      "distinct_base_templates": 5,
+      "distinct_surface_strings": 3542
+    },
+    "phishing": {
+      "distinct_base_templates": 7,
+      "distinct_surface_strings": 5452
+    },
+    "pumpdump": {
+      "distinct_base_templates": 6,
+      "distinct_surface_strings": 4521
+    },
+    "selfharm": {
+      "distinct_base_templates": 12,
+      "distinct_surface_strings": 5391
+    },
+    "stalking": {
+      "distinct_base_templates": 6,
+      "distinct_surface_strings": 4491
+    }
+  }
+}
