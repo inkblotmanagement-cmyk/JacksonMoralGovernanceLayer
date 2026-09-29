@@ -22,9 +22,11 @@ from pathlib import Path
 from typing import Optional
 
 from . import signals as S
+from . import crisis as CR
+from . import locate as LOC
 from .audit import write_audit
 
-ENGINE_VERSION = "jmgl-0.1.0"
+ENGINE_VERSION = "jmgl-0.1.1"
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_LAWS = REPO_ROOT / "spec" / "laws.json"
 
@@ -84,8 +86,9 @@ def _judge_single(sig: dict) -> list[tuple[str, str]]:
     if _has(sig, "elder") and _has(sig, "pressure", "conceal", "deceive") and not (mitig and not _has(sig, "produce")):
         hits.append(("JL-03", "The request seeks to pressure or manipulate a vulnerable person (such as an elder) into a financial decision."))
 
-    # JL-04 stalking / tracking a person
-    if _has(sig, "stalk") and (_has(sig, "target_person") or "stalk" in " ".join(sig["stalk"])) and not mitig:
+    # JL-04 stalking / tracking a person (v0.1.1: + locate/person/intent families)
+    old_stalk = _has(sig, "stalk") and (_has(sig, "target_person") or "stalk" in " ".join(sig["stalk"]))
+    if (old_stalk or sig.get("_locate_hit")) and not mitig:
         hits.append(("JL-04", "The request seeks to locate, track, or monitor a specific person without their consent."))
 
     # JL-06 discriminatory hiring (proxy exclusion)
@@ -110,17 +113,24 @@ def evaluate_action(request: str, context: Optional[dict] = None, *, laws_path: 
     history = [str(h) for h in context.get("history", [])]
 
     sig = S.scan(request)
+    sig["_locate_hit"] = ["locate"] if LOC.assess(request)["hit"] else []
     hist_sigs = [S.scan(h) for h in history]
+    crisis_now = CR.assess(request)["level"]
+    crisis_hist = [CR.assess(h)["level"] for h in history]
     verdict: Verdict
 
     bypass = _has(sig, "bypass_authority")
     hits = _judge_single(sig)
 
     # 1) Self-harm: supportive escalation takes priority (never a cold block).
-    if _has(sig, "self_harm") or any(_has(h, "self_harm") for h in hist_sigs):
+    if _has(sig, "self_harm") or crisis_now == "self" or any(_has(h, "self_harm") for h in hist_sigs) or "self" in crisis_hist:
         verdict = Verdict("ESCALATE", "JL-08",
                           "This sounds like you may be going through something very painful. You deserve support from a real person right now.",
                           resources=list(CRISIS_RESOURCES))
+    elif crisis_now == "third_party":
+        verdict = Verdict("ESCALATE", "JL-08",
+                          "It's caring of you to look out for them. What they're saying can be a warning sign, so it's worth connecting them with support.",
+                          resources=list(CR.SUPPORTER_RESOURCES))
     elif hits:
         law_id, reason = hits[0]
         decision = laws[law_id]["default_decision"]
