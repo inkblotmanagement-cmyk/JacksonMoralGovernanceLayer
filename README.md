@@ -1,3 +1,21 @@
+from jmgl import JacksonMoralGovernanceLayer, EvaluationRequest
+
+layer = JacksonMoralGovernanceLayer()
+
+def gated_reply(user_text: str, model_reply: str, industry: str = "") -> dict:
+    gate = layer.evaluate(
+        EvaluationRequest(
+            text=model_reply,
+            industry=industry,
+            claimed_outcome=user_text,
+        )
+    )
+    payload = gate.to_dict()
+    if gate.decision.value == "REJECT":
+        return {"ok": False, "reply": None, "message": "Blocked by JMGL", "gate": payload}
+    if gate.decision.value == "REVIEW":
+        return {"ok": "hold", "reply": model_reply, "message": "Human review required", "gate": payload}
+    return {"ok": True, "reply": model_reply, "gate": payload}
 
 # JacksonMoralGovernanceLayer (JMGL) + Eternal Mercy Anchor Protocol (EMAP)
 
