@@ -80,7 +80,25 @@ All four keys are required, `additionalProperties: false`, and confidence must b
 - `FakeJudge`: scripted outputs and exceptions, for tests.
 - `OpenAICompatJudge`: optional. It POSTs to `$JMGL_JUDGE_BASE_URL/chat/completions` (default `https://api.openai.com/v1`) using `$JMGL_JUDGE_API_KEY` and `$JMGL_JUDGE_MODEL`, with temperature 0, JSON mode and a 10 s timeout. It uses the stdlib only. If it isn't configured it returns an error, which fails closed. The test suite never calls it.
 
-## Current status (honest)
+## Two verdict views (both kept)
 
-- With `NullJudge` the gate is only the fail-closed baseline (`eval/REPORT_GATE_null.md`): nothing is ever APPROVEd, harm cases the rules miss end up in REVIEW instead of being allowed, and REVIEW volume is large. That trades missed harm for human-review load; it is not a detection gain.
-- **No real model judge is connected yet**, so there are no real before/after numbers. To get them, a judge must be configured and run on the 100k set and on the held-out sets, and its own error rate reported, including REVIEW volume and benign APPROVE rate.
+The engine's **four-way format** (ALLOW / BLOCK / MODIFY / ESCALATE + rule_id + reason, kept at Mindful Oracle's request) and the gate's **APPROVE / REVIEW / REJECT** are both produced for every merged decision (`FinalVerdict.decision` and `FinalVerdict.four_way`; both are in the audit record).
+
+| four-way (engine / hybrid) | gate | notes |
+|---|---|---|
+| ALLOW | APPROVE | |
+| MODIFY | REVIEW | fair alternative kept when the rule stage produced one; a fail-closed REVIEW also shows as MODIFY ("hold") |
+| BLOCK | REJECT | |
+| ESCALATE | REJECT + crisis resources (988) | request never completed |
+
+The gate-to-four-way direction (`merge.to_four_way`) is: REJECT with crisis → ESCALATE, REJECT → BLOCK, REVIEW → MODIFY, APPROVE → ALLOW.
+The judge's own verdict has a four-way form too (`judge.judge_to_four_way`): self_harm/suicide → ESCALATE (988), harm REJECT → BLOCK, REVIEW (fixable, e.g. discriminatory_hiring) → MODIFY, benign APPROVE → ALLOW.
+
+## Local judge (v0.3)
+
+`LocalJudge` runs **Qwen2.5-1.5B-Instruct Q4_K_M** (Apache-2.0, ungated) through llama-cpp-python with JSON-schema-constrained decoding, fully offline, at $0. Prompt `local-v1` was tuned only on `tests/tests.json`. The model outputs `rationale_short`, `category` and `confidence`, and the `decision` is derived deterministically from the category. Details and numbers: `eval/REPORT_HYBRID_local.md`.
+
+## Current status (honest, v0.3)
+
+- The **NullJudge** baseline (`eval/REPORT_GATE_null.md`) still applies whenever no judge is available. Nothing is APPROVEd and REVIEW volume is large.
+- With the **local judge**, on a 5,000-case stratified sample of the synthetic set, missed harm fell from 65.7% to 27.3% and self-harm ALLOW fell from 57.5% to 17.9%. The cost was more false alarms: benign unacceptable REJECT went from 9.6% to 18.2%, mostly situational venting and fiction escalated as self-harm. On the fresh hand-written set (46 cases, committed before the prompt) the hybrid still missed 16/27 harm cases, including 4/6 self-harm, and 3/5 stalking. A 1.5B local model is a useful but weak judge. A stronger judge and independent, human-labeled evaluation are still needed before any real deployment.

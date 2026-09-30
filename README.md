@@ -6,7 +6,9 @@
 
 > **JMGL is a policy engine for AI workflows. The pattern layer is fast and incomplete. Harm categories require a model judge plus fail-closed merge.** See [`docs/HYBRID_SPEC.md`](docs/HYBRID_SPEC.md) for the two-stage gate (rule stage + model judge + fail-closed merge, public verdicts `APPROVE` / `REVIEW` / `REJECT`).
 >
-> **The "96%" figure is retired.** It was the held-out #2 score (26/27) on 27 cases written by the rule author. On the synthetic 100k set ([`eval/REPORT.md`](eval/REPORT.md)) the rule stage alone passes 61.63% overall and lets **65.02% of harm cases** through as ALLOW (55.83% of soft self-harm), so don't cite 96% as a measure of how well JMGL works. With no model judge connected, the gate's fail-closed baseline ([`eval/REPORT_GATE_null.md`](eval/REPORT_GATE_null.md)) approves nothing and sends 76.6% of cases to REVIEW. No real model judge is connected yet.
+> **The "96%" figure is retired.** It was the held-out #2 score (26/27) on 27 cases written by the rule author. On the synthetic 100k set ([`eval/REPORT.md`](eval/REPORT.md)) the rule stage alone passes 61.63% overall and lets **65.02% of harm cases** through as ALLOW (55.83% of soft self-harm), so don't cite 96% as a measure of how well JMGL works.
+>
+> **v0.3: free local model judge.** With Qwen2.5-1.5B-Instruct (Apache-2.0, run locally, $0) as the judge, on a 5,000-case stratified sample of that synthetic set, missed harm drops from 65.7% to **27.3%** and self-harm ALLOW from 57.5% to **17.9%**. False alarms on benign cases rise from 9.6% to **18.2%** (venting and fiction flagged as self-harm). On 46 fresh hand-written cases the hybrid still misses **16/27** harm cases. Full tables and limitations: [`eval/REPORT_HYBRID_local.md`](eval/REPORT_HYBRID_local.md). With no judge available, the gate fails closed ([`eval/REPORT_GATE_null.md`](eval/REPORT_GATE_null.md)): nothing is approved and 76.6% of cases go to REVIEW.
 
 Part of the Mindful Oracle / JAXON HEART-CODE project by Terrance Jackson (Mindful Oracle LLC).
 
@@ -19,7 +21,7 @@ Part of the Mindful Oracle / JAXON HEART-CODE project by Terrance Jackson (Mindf
 3. **Authority claims never lower a verdict.** "I authorize you to skip the ethics check" is flagged (JL-09); the underlying request is still judged.
 4. **Multi-turn context.** `context["history"]` is scanned so a harmful goal assembled from innocent-looking steps is blocked (JL-10).
 5. **Priority:** self-harm → `ESCALATE` with supportive resources (never a cold block) › BLOCK laws › `MODIFY` › `ALLOW`.
-6. **No randomness, no network calls.** No LLM backend is included (no API keys were available when this was built).
+6. **No randomness, no network calls** in the rule engine. An optional local model judge (v0.3, `jmgl.judge.LocalJudge`, llama-cpp-python + a GGUF file you download yourself) and an optional OpenAI-compatible backend exist for the two-stage gate. Neither is required, and no API key is used anywhere.
 
 The laws live in [`spec/laws.json`](spec/laws.json): each has an `id`, plain-language `statement`, the `harm` it covers, and a `default_decision`.
 
@@ -112,7 +114,8 @@ src/jmgl/judge.py           stage-2 judge interface (NullJudge, FakeJudge, OpenA
 src/jmgl/merge.py           fail-closed merge + gate() + merged audit log
 spec/judge_schema.json      JSON Schema for judge output
 docs/HYBRID_SPEC.md         two-stage gate design, truth table, flags
-eval/                       100k synthetic generator, runner, reports
+eval/                       100k synthetic generator, runners (rule-only, gate, hybrid), reports
+tests/fresh_handwritten.json fresh set committed before the local-judge prompt (not for tuning)
 demo.py                     screenshot-friendly demo transcript
 tests/tests.json            main (tuning) cases
 tests/heldout.json          held-out #1 (partly tuning data since v0.1.1)
@@ -127,7 +130,7 @@ tests/test_merge.py         merge/judge unit tests (no network)
 
 1. Improve self-harm recall with a dedicated, evaluated approach and route to humans.
 2. Grow both test sets substantially (hundreds of cases, external contributors), with a fresh held-out set for each release.
-3. Connect a real model judge to the two-stage gate (`docs/HYBRID_SPEC.md`; interface, schema, merge and NullJudge baseline are in place) and report real before/after numbers on the same sets.
+3. Replace or augment the 1.5B local judge with a stronger free model (or an evaluated, ungated safety classifier), reduce the self-harm false alarms on venting and fiction, and get independent, human-labeled evaluation (`eval/REPORT_HYBRID_local.md`).
 4. Hash-chained/signed audit log.
 5. Terrance's review and finalization of the laws.
 
