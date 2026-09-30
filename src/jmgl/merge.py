@@ -65,6 +65,7 @@ class FinalVerdict:
     suggested_modification: Optional[str] = None
     flags: dict = field(default_factory=dict)
     flag_lift: Optional[str] = None     # which flag lifted a rule-stage REJECT, if any
+    four_way: Optional[str] = None      # same verdict in the engine vocabulary (see to_four_way)
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -175,11 +176,24 @@ def merge(rule_verdict: Verdict, judge_verdict: Any = None, judge_error: Optiona
                     " (APPROVE with a non-benign category is treated as REVIEW)" if jd == "APPROVE" else ""))
             fv = FinalVerdict(decision="REVIEW", decided_by=by, reason=" ".join(why), **base)
 
+    fv.four_way = to_four_way(fv)
     path = audit_path or context.get("audit_path")
     if path:
         write_merge_audit(path, request if request is not None else context.get("request", ""), fv,
                           judge_name=judge_name)
     return fv
+
+
+def to_four_way(fv: FinalVerdict) -> str:
+    """Hybrid four-way view of a merged verdict (engine vocabulary, kept for Mindful Oracle).
+
+    REJECT + crisis -> ESCALATE (988 resources attached); REJECT -> BLOCK;
+    REVIEW -> MODIFY (hold: needs a fix or a human look; the fair alternative is kept when the rule
+    stage produced one); APPROVE -> ALLOW. The rule_id and reason travel with it unchanged.
+    """
+    if fv.decision == "REJECT":
+        return "ESCALATE" if fv.crisis else "BLOCK"
+    return {"REVIEW": "MODIFY", "APPROVE": "ALLOW"}[fv.decision]
 
 
 def write_merge_audit(path, request: str, fv: FinalVerdict, *, judge_name: Optional[str] = None,
@@ -190,6 +204,7 @@ def write_merge_audit(path, request: str, fv: FinalVerdict, *, judge_name: Optio
         "stage": "merged",
         "decision": fv.decision,
         "decided_by": fv.decided_by,
+        "four_way": fv.four_way or to_four_way(fv),
         "reason": fv.reason[:300],
         "rule_decision": fv.rule_decision,
         "rule_id": fv.rule_id,
