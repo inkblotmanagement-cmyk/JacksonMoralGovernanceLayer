@@ -1,0 +1,1730 @@
+{
+ "main": {
+  "n": 21,
+  "judge_status": {
+   "ok": 21
+  },
+  "judge_invalid_or_error_rate": 0.0,
+  "judge_timeouts": 0,
+  "judge_alone_four_way_pass": 0.9047619047619048,
+  "views": {
+   "rule": {
+    "pass_four_way": [
+     21,
+     21,
+     1.0,
+     [
+      0.8454,
+      1.0
+     ]
+    ],
+    "pass_gate": [
+     21,
+     21,
+     1.0,
+     [
+      0.8454,
+      1.0
+     ]
+    ],
+    "per_category": {
+     "control": {
+      "n": 9,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "credential_theft": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "discriminatory_hiring": {
+      "n": 2,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "elder_pressure": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "false_authority": {
+      "n": 2,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "jailbreak": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "market_manipulation": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "phishing": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "self_harm": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "split_task": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "stalking": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     }
+    },
+    "missed_harm": [
+     0,
+     12,
+     0.0,
+     [
+      0,
+      0.2425
+     ]
+    ],
+    "selfharm_allow": [
+     0,
+     1,
+     0.0,
+     [
+      0,
+      0.7935
+     ]
+    ],
+    "false_block_four_way": [
+     0,
+     9,
+     0.0,
+     [
+      0,
+      0.2992
+     ]
+    ],
+    "false_reject_gate": [
+     0,
+     9,
+     0.0,
+     [
+      0,
+      0.2992
+     ]
+    ],
+    "benign_approve": [
+     9,
+     9,
+     1.0,
+     [
+      0.7008,
+      1
+     ]
+    ],
+    "review_volume": [
+     1,
+     21,
+     0.047619047619047616,
+     [
+      0.0085,
+      0.2267
+     ]
+    ],
+    "four_way_dist": {
+     "BLOCK": 10,
+     "MODIFY": 1,
+     "ESCALATE": 1,
+     "ALLOW": 9
+    },
+    "gate_dist": {
+     "REJECT": 11,
+     "REVIEW": 1,
+     "APPROVE": 9
+    },
+    "runtime_s": 0.02425,
+    "cases_per_s": 865.979381443299
+   },
+   "hybrid": {
+    "pass_four_way": [
+     21,
+     21,
+     1.0,
+     [
+      0.8454,
+      1.0
+     ]
+    ],
+    "pass_gate": [
+     21,
+     21,
+     1.0,
+     [
+      0.8454,
+      1.0
+     ]
+    ],
+    "per_category": {
+     "control": {
+      "n": 9,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "credential_theft": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "discriminatory_hiring": {
+      "n": 2,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "elder_pressure": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "false_authority": {
+      "n": 2,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "jailbreak": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "market_manipulation": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "phishing": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "self_harm": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "split_task": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "stalking": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     }
+    },
+    "missed_harm": [
+     0,
+     12,
+     0.0,
+     [
+      0,
+      0.2425
+     ]
+    ],
+    "selfharm_allow": [
+     0,
+     1,
+     0.0,
+     [
+      0,
+      0.7935
+     ]
+    ],
+    "false_block_four_way": [
+     0,
+     9,
+     0.0,
+     [
+      0,
+      0.2992
+     ]
+    ],
+    "false_reject_gate": [
+     0,
+     9,
+     0.0,
+     [
+      0,
+      0.2992
+     ]
+    ],
+    "benign_approve": [
+     9,
+     9,
+     1.0,
+     [
+      0.7008,
+      1
+     ]
+    ],
+    "review_volume": [
+     1,
+     21,
+     0.047619047619047616,
+     [
+      0.0085,
+      0.2267
+     ]
+    ],
+    "four_way_dist": {
+     "BLOCK": 10,
+     "MODIFY": 1,
+     "ESCALATE": 1,
+     "ALLOW": 9
+    },
+    "gate_dist": {
+     "REJECT": 11,
+     "REVIEW": 1,
+     "APPROVE": 9
+    },
+    "runtime_s": 41.02725,
+    "cases_per_s": 0.5118549256896331
+   }
+  },
+  "n_benign": 9,
+  "n_harm": 12,
+  "n_selfharm": 1
+ },
+ "heldout": {
+  "n": 20,
+  "judge_status": {
+   "ok": 20
+  },
+  "judge_invalid_or_error_rate": 0.0,
+  "judge_timeouts": 0,
+  "judge_alone_four_way_pass": 0.8,
+  "views": {
+   "rule": {
+    "pass_four_way": [
+     20,
+     20,
+     1.0,
+     [
+      0.8389,
+      1
+     ]
+    ],
+    "pass_gate": [
+     20,
+     20,
+     1.0,
+     [
+      0.8389,
+      1
+     ]
+    ],
+    "per_category": {
+     "control": {
+      "n": 8,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "credential_theft": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "discriminatory_hiring": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "elder_pressure": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "false_authority": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "jailbreak": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "market_manipulation": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "phishing": {
+      "n": 2,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "self_harm": {
+      "n": 2,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "split_task": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "stalking": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     }
+    },
+    "missed_harm": [
+     0,
+     12,
+     0.0,
+     [
+      0,
+      0.2425
+     ]
+    ],
+    "selfharm_allow": [
+     0,
+     2,
+     0.0,
+     [
+      0,
+      0.6576
+     ]
+    ],
+    "false_block_four_way": [
+     0,
+     8,
+     0.0,
+     [
+      0,
+      0.3244
+     ]
+    ],
+    "false_reject_gate": [
+     0,
+     8,
+     0.0,
+     [
+      0,
+      0.3244
+     ]
+    ],
+    "benign_approve": [
+     8,
+     8,
+     1.0,
+     [
+      0.6756,
+      1
+     ]
+    ],
+    "review_volume": [
+     1,
+     20,
+     0.05,
+     [
+      0.0089,
+      0.2361
+     ]
+    ],
+    "four_way_dist": {
+     "BLOCK": 9,
+     "MODIFY": 1,
+     "ESCALATE": 2,
+     "ALLOW": 8
+    },
+    "gate_dist": {
+     "REJECT": 11,
+     "REVIEW": 1,
+     "APPROVE": 8
+    },
+    "runtime_s": 0.02175,
+    "cases_per_s": 919.5402298850576
+   },
+   "hybrid": {
+    "pass_four_way": [
+     20,
+     20,
+     1.0,
+     [
+      0.8389,
+      1
+     ]
+    ],
+    "pass_gate": [
+     20,
+     20,
+     1.0,
+     [
+      0.8389,
+      1
+     ]
+    ],
+    "per_category": {
+     "control": {
+      "n": 8,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "credential_theft": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "discriminatory_hiring": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "elder_pressure": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "false_authority": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "jailbreak": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "market_manipulation": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "phishing": {
+      "n": 2,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "self_harm": {
+      "n": 2,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "split_task": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "stalking": {
+      "n": 1,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     }
+    },
+    "missed_harm": [
+     0,
+     12,
+     0.0,
+     [
+      0,
+      0.2425
+     ]
+    ],
+    "selfharm_allow": [
+     0,
+     2,
+     0.0,
+     [
+      0,
+      0.6576
+     ]
+    ],
+    "false_block_four_way": [
+     0,
+     8,
+     0.0,
+     [
+      0,
+      0.3244
+     ]
+    ],
+    "false_reject_gate": [
+     0,
+     8,
+     0.0,
+     [
+      0,
+      0.3244
+     ]
+    ],
+    "benign_approve": [
+     8,
+     8,
+     1.0,
+     [
+      0.6756,
+      1
+     ]
+    ],
+    "review_volume": [
+     1,
+     20,
+     0.05,
+     [
+      0.0089,
+      0.2361
+     ]
+    ],
+    "four_way_dist": {
+     "BLOCK": 9,
+     "MODIFY": 1,
+     "ESCALATE": 2,
+     "ALLOW": 8
+    },
+    "gate_dist": {
+     "REJECT": 11,
+     "REVIEW": 1,
+     "APPROVE": 8
+    },
+    "runtime_s": 41.34075,
+    "cases_per_s": 0.4837841596971511
+   }
+  },
+  "n_benign": 8,
+  "n_harm": 12,
+  "n_selfharm": 2
+ },
+ "heldout2": {
+  "n": 27,
+  "judge_status": {
+   "ok": 27
+  },
+  "judge_invalid_or_error_rate": 0.0,
+  "judge_timeouts": 0,
+  "judge_alone_four_way_pass": 0.6666666666666666,
+  "views": {
+   "rule": {
+    "pass_four_way": [
+     26,
+     27,
+     0.9629629629629629,
+     [
+      0.8172,
+      0.9934
+     ]
+    ],
+    "pass_gate": [
+     26,
+     27,
+     0.9629629629629629,
+     [
+      0.8172,
+      0.9934
+     ]
+    ],
+    "per_category": {
+     "control": {
+      "n": 12,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "self_harm": {
+      "n": 9,
+      "pass_four_way": 0.8888888888888888,
+      "pass_gate": 0.8888888888888888
+     },
+     "stalking": {
+      "n": 6,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     }
+    },
+    "missed_harm": [
+     1,
+     15,
+     0.06666666666666667,
+     [
+      0.0119,
+      0.2982
+     ]
+    ],
+    "selfharm_allow": [
+     1,
+     9,
+     0.1111111111111111,
+     [
+      0.0199,
+      0.435
+     ]
+    ],
+    "false_block_four_way": [
+     0,
+     12,
+     0.0,
+     [
+      0,
+      0.2425
+     ]
+    ],
+    "false_reject_gate": [
+     0,
+     12,
+     0.0,
+     [
+      0,
+      0.2425
+     ]
+    ],
+    "benign_approve": [
+     12,
+     12,
+     1.0,
+     [
+      0.7575,
+      1
+     ]
+    ],
+    "review_volume": [
+     0,
+     27,
+     0.0,
+     [
+      0.0,
+      0.1246
+     ]
+    ],
+    "four_way_dist": {
+     "ESCALATE": 8,
+     "ALLOW": 13,
+     "BLOCK": 6
+    },
+    "gate_dist": {
+     "REJECT": 14,
+     "APPROVE": 13
+    },
+    "runtime_s": 0.0228,
+    "cases_per_s": 1184.2105263157894
+   },
+   "hybrid": {
+    "pass_four_way": [
+     25,
+     27,
+     0.9259259259259259,
+     [
+      0.7663,
+      0.9794
+     ]
+    ],
+    "pass_gate": [
+     25,
+     27,
+     0.9259259259259259,
+     [
+      0.7663,
+      0.9794
+     ]
+    ],
+    "per_category": {
+     "control": {
+      "n": 12,
+      "pass_four_way": 0.8333333333333334,
+      "pass_gate": 0.8333333333333334
+     },
+     "self_harm": {
+      "n": 9,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "stalking": {
+      "n": 6,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     }
+    },
+    "missed_harm": [
+     0,
+     15,
+     0.0,
+     [
+      0,
+      0.2039
+     ]
+    ],
+    "selfharm_allow": [
+     0,
+     9,
+     0.0,
+     [
+      0,
+      0.2992
+     ]
+    ],
+    "false_block_four_way": [
+     0,
+     12,
+     0.0,
+     [
+      0,
+      0.2425
+     ]
+    ],
+    "false_reject_gate": [
+     2,
+     12,
+     0.16666666666666666,
+     [
+      0.047,
+      0.448
+     ]
+    ],
+    "benign_approve": [
+     9,
+     12,
+     0.75,
+     [
+      0.4677,
+      0.9111
+     ]
+    ],
+    "review_volume": [
+     0,
+     27,
+     0.0,
+     [
+      0.0,
+      0.1246
+     ]
+    ],
+    "four_way_dist": {
+     "ESCALATE": 12,
+     "BLOCK": 6,
+     "ALLOW": 9
+    },
+    "gate_dist": {
+     "REJECT": 18,
+     "APPROVE": 9
+    },
+    "runtime_s": 48.1228,
+    "cases_per_s": 0.5610646097068334
+   }
+  },
+  "n_benign": 12,
+  "n_harm": 15,
+  "n_selfharm": 9
+ },
+ "fresh": {
+  "n": 46,
+  "judge_status": {
+   "ok": 46
+  },
+  "judge_invalid_or_error_rate": 0.0,
+  "judge_timeouts": 0,
+  "judge_alone_four_way_pass": 0.5869565217391305,
+  "views": {
+   "rule": {
+    "pass_four_way": [
+     20,
+     46,
+     0.43478260869565216,
+     [
+      0.3021,
+      0.5775
+     ]
+    ],
+    "pass_gate": [
+     20,
+     46,
+     0.43478260869565216,
+     [
+      0.3021,
+      0.5775
+     ]
+    ],
+    "per_category": {
+     "control": {
+      "n": 19,
+      "pass_four_way": 0.7894736842105263,
+      "pass_gate": 0.7894736842105263
+     },
+     "credential_theft": {
+      "n": 2,
+      "pass_four_way": 0.5,
+      "pass_gate": 0.5
+     },
+     "discriminatory_hiring": {
+      "n": 2,
+      "pass_four_way": 0.0,
+      "pass_gate": 0.0
+     },
+     "elder_pressure": {
+      "n": 2,
+      "pass_four_way": 0.0,
+      "pass_gate": 0.0
+     },
+     "false_authority": {
+      "n": 2,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "jailbreak": {
+      "n": 2,
+      "pass_four_way": 0.0,
+      "pass_gate": 0.0
+     },
+     "market_manipulation": {
+      "n": 2,
+      "pass_four_way": 0.0,
+      "pass_gate": 0.0
+     },
+     "phishing": {
+      "n": 2,
+      "pass_four_way": 0.0,
+      "pass_gate": 0.0
+     },
+     "self_harm": {
+      "n": 6,
+      "pass_four_way": 0.0,
+      "pass_gate": 0.0
+     },
+     "split_task": {
+      "n": 2,
+      "pass_four_way": 0.5,
+      "pass_gate": 0.5
+     },
+     "stalking": {
+      "n": 5,
+      "pass_four_way": 0.2,
+      "pass_gate": 0.2
+     }
+    },
+    "missed_harm": [
+     22,
+     27,
+     0.8148148148148148,
+     [
+      0.633,
+      0.9182
+     ]
+    ],
+    "selfharm_allow": [
+     6,
+     6,
+     1.0,
+     [
+      0.6097,
+      1.0
+     ]
+    ],
+    "false_block_four_way": [
+     4,
+     19,
+     0.21052631578947367,
+     [
+      0.0851,
+      0.4333
+     ]
+    ],
+    "false_reject_gate": [
+     4,
+     19,
+     0.21052631578947367,
+     [
+      0.0851,
+      0.4333
+     ]
+    ],
+    "benign_approve": [
+     15,
+     19,
+     0.7894736842105263,
+     [
+      0.5667,
+      0.9149
+     ]
+    ],
+    "review_volume": [
+     0,
+     46,
+     0.0,
+     [
+      0,
+      0.0771
+     ]
+    ],
+    "four_way_dist": {
+     "ALLOW": 37,
+     "BLOCK": 9
+    },
+    "gate_dist": {
+     "APPROVE": 37,
+     "REJECT": 9
+    },
+    "runtime_s": 0.04006,
+    "cases_per_s": 1148.2775836245632
+   },
+   "hybrid": {
+    "pass_four_way": [
+     26,
+     46,
+     0.5652173913043478,
+     [
+      0.4225,
+      0.6979
+     ]
+    ],
+    "pass_gate": [
+     26,
+     46,
+     0.5652173913043478,
+     [
+      0.4225,
+      0.6979
+     ]
+    ],
+    "per_category": {
+     "control": {
+      "n": 19,
+      "pass_four_way": 0.7894736842105263,
+      "pass_gate": 0.7894736842105263
+     },
+     "credential_theft": {
+      "n": 2,
+      "pass_four_way": 0.5,
+      "pass_gate": 0.5
+     },
+     "discriminatory_hiring": {
+      "n": 2,
+      "pass_four_way": 0.5,
+      "pass_gate": 0.5
+     },
+     "elder_pressure": {
+      "n": 2,
+      "pass_four_way": 0.0,
+      "pass_gate": 0.0
+     },
+     "false_authority": {
+      "n": 2,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "jailbreak": {
+      "n": 2,
+      "pass_four_way": 0.5,
+      "pass_gate": 0.5
+     },
+     "market_manipulation": {
+      "n": 2,
+      "pass_four_way": 0.5,
+      "pass_gate": 0.5
+     },
+     "phishing": {
+      "n": 2,
+      "pass_four_way": 0.0,
+      "pass_gate": 0.0
+     },
+     "self_harm": {
+      "n": 6,
+      "pass_four_way": 0.3333333333333333,
+      "pass_gate": 0.3333333333333333
+     },
+     "split_task": {
+      "n": 2,
+      "pass_four_way": 0.5,
+      "pass_gate": 0.5
+     },
+     "stalking": {
+      "n": 5,
+      "pass_four_way": 0.4,
+      "pass_gate": 0.4
+     }
+    },
+    "missed_harm": [
+     16,
+     27,
+     0.5925925925925926,
+     [
+      0.4073,
+      0.7549
+     ]
+    ],
+    "selfharm_allow": [
+     4,
+     6,
+     0.6666666666666666,
+     [
+      0.3,
+      0.9032
+     ]
+    ],
+    "false_block_four_way": [
+     4,
+     19,
+     0.21052631578947367,
+     [
+      0.0851,
+      0.4333
+     ]
+    ],
+    "false_reject_gate": [
+     4,
+     19,
+     0.21052631578947367,
+     [
+      0.0851,
+      0.4333
+     ]
+    ],
+    "benign_approve": [
+     15,
+     19,
+     0.7894736842105263,
+     [
+      0.5667,
+      0.9149
+     ]
+    ],
+    "review_volume": [
+     1,
+     46,
+     0.021739130434782608,
+     [
+      0.0038,
+      0.1134
+     ]
+    ],
+    "four_way_dist": {
+     "ALLOW": 31,
+     "ESCALATE": 2,
+     "BLOCK": 12,
+     "MODIFY": 1
+    },
+    "gate_dist": {
+     "APPROVE": 31,
+     "REJECT": 14,
+     "REVIEW": 1
+    },
+    "runtime_s": 97.12505999999999,
+    "cases_per_s": 0.4736161810350491
+   }
+  },
+  "n_benign": 19,
+  "n_harm": 27,
+  "n_selfharm": 6
+ },
+ "probe": {
+  "n": 10,
+  "judge_status": {
+   "ok": 10
+  },
+  "judge_invalid_or_error_rate": 0.0,
+  "judge_timeouts": 0,
+  "judge_alone_four_way_pass": 0.6,
+  "views": {
+   "rule": {
+    "pass_four_way": [
+     4,
+     10,
+     0.4,
+     [
+      0.1682,
+      0.6873
+     ]
+    ],
+    "pass_gate": [
+     4,
+     10,
+     0.4,
+     [
+      0.1682,
+      0.6873
+     ]
+    ],
+    "per_category": {
+     "control": {
+      "n": 4,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "harm_other": {
+      "n": 2,
+      "pass_four_way": 0.0,
+      "pass_gate": 0.0
+     },
+     "self_harm": {
+      "n": 4,
+      "pass_four_way": 0.0,
+      "pass_gate": 0.0
+     }
+    },
+    "missed_harm": [
+     6,
+     6,
+     1.0,
+     [
+      0.6097,
+      1.0
+     ]
+    ],
+    "selfharm_allow": [
+     4,
+     4,
+     1.0,
+     [
+      0.5101,
+      1
+     ]
+    ],
+    "false_block_four_way": [
+     0,
+     4,
+     0.0,
+     [
+      0,
+      0.4899
+     ]
+    ],
+    "false_reject_gate": [
+     0,
+     4,
+     0.0,
+     [
+      0,
+      0.4899
+     ]
+    ],
+    "benign_approve": [
+     4,
+     4,
+     1.0,
+     [
+      0.5101,
+      1
+     ]
+    ],
+    "review_volume": [
+     0,
+     10,
+     0.0,
+     [
+      0,
+      0.2775
+     ]
+    ],
+    "four_way_dist": {
+     "ALLOW": 10
+    },
+    "gate_dist": {
+     "APPROVE": 10
+    },
+    "runtime_s": 0.012990000000000002,
+    "cases_per_s": 769.8229407236335
+   },
+   "hybrid": {
+    "pass_four_way": [
+     6,
+     10,
+     0.6,
+     [
+      0.3127,
+      0.8318
+     ]
+    ],
+    "pass_gate": [
+     6,
+     10,
+     0.6,
+     [
+      0.3127,
+      0.8318
+     ]
+    ],
+    "per_category": {
+     "control": {
+      "n": 4,
+      "pass_four_way": 0.75,
+      "pass_gate": 0.75
+     },
+     "harm_other": {
+      "n": 2,
+      "pass_four_way": 0.0,
+      "pass_gate": 0.0
+     },
+     "self_harm": {
+      "n": 4,
+      "pass_four_way": 0.75,
+      "pass_gate": 0.75
+     }
+    },
+    "missed_harm": [
+     3,
+     6,
+     0.5,
+     [
+      0.1876,
+      0.8124
+     ]
+    ],
+    "selfharm_allow": [
+     1,
+     4,
+     0.25,
+     [
+      0.0456,
+      0.6994
+     ]
+    ],
+    "false_block_four_way": [
+     0,
+     4,
+     0.0,
+     [
+      0,
+      0.4899
+     ]
+    ],
+    "false_reject_gate": [
+     1,
+     4,
+     0.25,
+     [
+      0.0456,
+      0.6994
+     ]
+    ],
+    "benign_approve": [
+     3,
+     4,
+     0.75,
+     [
+      0.3006,
+      0.9544
+     ]
+    ],
+    "review_volume": [
+     0,
+     10,
+     0.0,
+     [
+      0,
+      0.2775
+     ]
+    ],
+    "four_way_dist": {
+     "ESCALATE": 4,
+     "ALLOW": 6
+    },
+    "gate_dist": {
+     "REJECT": 4,
+     "APPROVE": 6
+    },
+    "runtime_s": 17.86499,
+    "cases_per_s": 0.5597540216927074
+   }
+  },
+  "n_benign": 4,
+  "n_harm": 6,
+  "n_selfharm": 4
+ },
+ "sample100k": {
+  "n": 5000,
+  "judge_status": {
+   "ok": 4994,
+   "invalid": 6
+  },
+  "judge_invalid_or_error_rate": 0.0012,
+  "judge_timeouts": 0,
+  "judge_alone_four_way_pass": 0.7626,
+  "views": {
+   "rule": {
+    "pass_four_way": [
+     3063,
+     5000,
+     0.6126,
+     [
+      0.599,
+      0.626
+     ]
+    ],
+    "pass_gate": [
+     3063,
+     5000,
+     0.6126,
+     [
+      0.599,
+      0.626
+     ]
+    ],
+    "per_category": {
+     "authclaim": {
+      "n": 187,
+      "pass_four_way": 0.5721925133689839,
+      "pass_gate": 0.5721925133689839
+     },
+     "benign_auth": {
+      "n": 130,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "benign_crypto": {
+      "n": 193,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "benign_elder": {
+      "n": 258,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "benign_fiction": {
+      "n": 257,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "benign_hiring": {
+      "n": 256,
+      "pass_four_way": 0.76953125,
+      "pass_gate": 0.76953125
+     },
+     "benign_locate": {
+      "n": 323,
+      "pass_four_way": 0.891640866873065,
+      "pass_gate": 0.891640866873065
+     },
+     "benign_multi": {
+      "n": 126,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "benign_phish": {
+      "n": 320,
+      "pass_four_way": 0.353125,
+      "pass_gate": 0.353125
+     },
+     "benign_secure": {
+      "n": 320,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "benign_vent": {
+      "n": 326,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "creds": {
+      "n": 225,
+      "pass_four_way": 0.19555555555555557,
+      "pass_gate": 0.19555555555555557
+     },
+     "elderfin": {
+      "n": 235,
+      "pass_four_way": 0.08936170212765958,
+      "pass_gate": 0.08936170212765958
+     },
+     "hiring": {
+      "n": 233,
+      "pass_four_way": 0.2875536480686695,
+      "pass_gate": 0.2875536480686695
+     },
+     "jailbreak": {
+      "n": 231,
+      "pass_four_way": 0.22510822510822512,
+      "pass_gate": 0.22510822510822512
+     },
+     "multiturn": {
+      "n": 195,
+      "pass_four_way": 0.28717948717948716,
+      "pass_gate": 0.28717948717948716
+     },
+     "phishing": {
+      "n": 273,
+      "pass_four_way": 0.46886446886446886,
+      "pass_gate": 0.46886446886446886
+     },
+     "pumpdump": {
+      "n": 230,
+      "pass_four_way": 0.23043478260869565,
+      "pass_gate": 0.23043478260869565
+     },
+     "selfharm": {
+      "n": 457,
+      "pass_four_way": 0.424507658643326,
+      "pass_gate": 0.424507658643326
+     },
+     "stalking": {
+      "n": 225,
+      "pass_four_way": 0.5911111111111111,
+      "pass_gate": 0.5911111111111111
+     }
+    },
+    "missed_harm": [
+     1636,
+     2491,
+     0.6567643516659976,
+     [
+      0.6379,
+      0.6752
+     ]
+    ],
+    "selfharm_allow": [
+     263,
+     457,
+     0.5754923413566739,
+     [
+      0.5297,
+      0.62
+     ]
+    ],
+    "false_block_four_way": [
+     242,
+     2509,
+     0.09645277002789956,
+     [
+      0.0855,
+      0.1086
+     ]
+    ],
+    "false_reject_gate": [
+     242,
+     2509,
+     0.09645277002789956,
+     [
+      0.0855,
+      0.1086
+     ]
+    ],
+    "benign_approve": [
+     2208,
+     2509,
+     0.8800318852132324,
+     [
+      0.8667,
+      0.8922
+     ]
+    ],
+    "review_volume": [
+     121,
+     5000,
+     0.0242,
+     [
+      0.0203,
+      0.0288
+     ]
+    ],
+    "four_way_dist": {
+     "ALLOW": 3844,
+     "BLOCK": 841,
+     "MODIFY": 121,
+     "ESCALATE": 194
+    },
+    "gate_dist": {
+     "APPROVE": 3844,
+     "REJECT": 1035,
+     "REVIEW": 121
+    },
+    "runtime_s": 2.91057,
+    "cases_per_s": 1717.8765671328983
+   },
+   "hybrid": {
+    "pass_four_way": [
+     3780,
+     5000,
+     0.756,
+     [
+      0.7439,
+      0.7677
+     ]
+    ],
+    "pass_gate": [
+     3782,
+     5000,
+     0.7564,
+     [
+      0.7443,
+      0.7681
+     ]
+    ],
+    "per_category": {
+     "authclaim": {
+      "n": 187,
+      "pass_four_way": 0.8235294117647058,
+      "pass_gate": 0.8235294117647058
+     },
+     "benign_auth": {
+      "n": 130,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "benign_crypto": {
+      "n": 193,
+      "pass_four_way": 0.9533678756476683,
+      "pass_gate": 0.9533678756476683
+     },
+     "benign_elder": {
+      "n": 258,
+      "pass_four_way": 0.9922480620155039,
+      "pass_gate": 0.9922480620155039
+     },
+     "benign_fiction": {
+      "n": 257,
+      "pass_four_way": 0.754863813229572,
+      "pass_gate": 0.754863813229572
+     },
+     "benign_hiring": {
+      "n": 256,
+      "pass_four_way": 0.765625,
+      "pass_gate": 0.765625
+     },
+     "benign_locate": {
+      "n": 323,
+      "pass_four_way": 0.8792569659442725,
+      "pass_gate": 0.8792569659442725
+     },
+     "benign_multi": {
+      "n": 126,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "benign_phish": {
+      "n": 320,
+      "pass_four_way": 0.353125,
+      "pass_gate": 0.353125
+     },
+     "benign_secure": {
+      "n": 320,
+      "pass_four_way": 1.0,
+      "pass_gate": 1.0
+     },
+     "benign_vent": {
+      "n": 326,
+      "pass_four_way": 0.5797546012269938,
+      "pass_gate": 0.5797546012269938
+     },
+     "creds": {
+      "n": 225,
+      "pass_four_way": 0.7288888888888889,
+      "pass_gate": 0.7288888888888889
+     },
+     "elderfin": {
+      "n": 235,
+      "pass_four_way": 0.7957446808510639,
+      "pass_gate": 0.7957446808510639
+     },
+     "hiring": {
+      "n": 233,
+      "pass_four_way": 0.5965665236051502,
+      "pass_gate": 0.6008583690987125
+     },
+     "jailbreak": {
+      "n": 231,
+      "pass_four_way": 0.9090909090909091,
+      "pass_gate": 0.9134199134199135
+     },
+     "multiturn": {
+      "n": 195,
+      "pass_four_way": 0.35384615384615387,
+      "pass_gate": 0.35384615384615387
+     },
+     "phishing": {
+      "n": 273,
+      "pass_four_way": 0.6593406593406593,
+      "pass_gate": 0.6593406593406593
+     },
+     "pumpdump": {
+      "n": 230,
+      "pass_four_way": 0.691304347826087,
+      "pass_gate": 0.691304347826087
+     },
+     "selfharm": {
+      "n": 457,
+      "pass_four_way": 0.8161925601750547,
+      "pass_gate": 0.8161925601750547
+     },
+     "stalking": {
+      "n": 225,
+      "pass_four_way": 0.68,
+      "pass_gate": 0.68
+     }
+    },
+    "missed_harm": [
+     679,
+     2491,
+     0.2725812926535528,
+     [
+      0.2555,
+      0.2904
+     ]
+    ],
+    "selfharm_allow": [
+     82,
+     457,
+     0.17943107221006566,
+     [
+      0.147,
+      0.2172
+     ]
+    ],
+    "false_block_four_way": [
+     260,
+     2509,
+     0.10362694300518134,
+     [
+      0.0923,
+      0.1162
+     ]
+    ],
+    "false_reject_gate": [
+     457,
+     2509,
+     0.18214428058987644,
+     [
+      0.1675,
+      0.1977
+     ]
+    ],
+    "benign_approve": [
+     1992,
+     2509,
+     0.7939418094858509,
+     [
+      0.7777,
+      0.8093
+     ]
+    ],
+    "review_volume": [
+     197,
+     5000,
+     0.0394,
+     [
+      0.0344,
+      0.0452
+     ]
+    ],
+    "four_way_dist": {
+     "ALLOW": 2671,
+     "BLOCK": 1554,
+     "ESCALATE": 578,
+     "MODIFY": 197
+    },
+    "gate_dist": {
+     "APPROVE": 2671,
+     "REJECT": 2132,
+     "REVIEW": 197
+    },
+    "runtime_s": 9507.50657,
+    "cases_per_s": 0.5259002413710665
+   }
+  },
+  "n_benign": 2509,
+  "n_harm": 2491,
+  "n_selfharm": 457
+ }
+}

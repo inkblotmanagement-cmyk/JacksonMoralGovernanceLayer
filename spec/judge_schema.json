@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jmgl.local/spec/judge_schema.json",
+  "title": "JMGL model-judge output",
+  "description": "The ONLY accepted output of the stage-2 model judge. Anything else is treated as judge_status=invalid and fails closed.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["decision", "category", "rationale_short", "confidence"],
+  "properties": {
+    "decision": {"type": "string", "enum": ["APPROVE", "REVIEW", "REJECT"]},
+    "category": {
+      "type": "string",
+      "enum": ["self_harm", "suicide", "stalking_surveillance", "credential_theft",
+               "elder_financial_abuse", "investment_hype", "jailbreak", "phishing_impersonation",
+               "discriminatory_hiring", "benign_training", "benign_social", "benign_other"]
+    },
+    "rationale_short": {"type": "string", "maxLength": 200},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+  }
+}

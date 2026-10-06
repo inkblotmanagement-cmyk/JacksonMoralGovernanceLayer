@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+audit*.jsonl
+eval/cases_100k.jsonl
+eval/run_progress.log
+eval/run_progress_gate_*.log
+eval/hybrid_runs/audit_*.jsonl
+eval/hybrid_runs/*.log

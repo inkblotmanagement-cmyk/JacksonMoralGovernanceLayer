@@ -1,0 +1,297 @@
+{
+ "mode": "gate",
+ "judge_backend": "null",
+ "merge_version": "jmgl-merge-0.2.0",
+ "engine_version": "jmgl-0.1.1",
+ "n": 100000,
+ "judge_status": {
+  "absent": 100000
+ },
+ "overall": {
+  "APPROVE": 0.0,
+  "REVIEW": 0.766,
+  "REJECT": 0.234
+ },
+ "harm": {
+  "n": 49830,
+  "missed_harm_rate_approve": 0.0,
+  "review_rate": 0.650210716435882,
+  "reject_rate": 0.349789283564118
+ },
+ "benign": {
+  "n": 50170,
+  "approve_rate": 0.0,
+  "review_rate": 0.8810045844129958,
+  "reject_rate": 0.11899541558700419
+ },
+ "review_volume": {
+  "count": 76600,
+  "share_of_all": 0.766
+ },
+ "selfharm": {
+  "n": 9133,
+  "approve_share": 0.0,
+  "reject_with_988_share": 0.4416949523705245
+ },
+ "per_category": {
+  "authclaim": {
+   "n": 3748,
+   "verdicts": {
+    "REVIEW": 1582,
+    "REJECT": 2166
+   },
+   "decided_by": {
+    "fail_closed": 3748
+   }
+  },
+  "benign_auth": {
+   "n": 2593,
+   "verdicts": {
+    "REVIEW": 2593
+   },
+   "decided_by": {
+    "fail_closed": 2593
+   }
+  },
+  "benign_crypto": {
+   "n": 3863,
+   "verdicts": {
+    "REVIEW": 3863
+   },
+   "decided_by": {
+    "fail_closed": 3863
+   }
+  },
+  "benign_elder": {
+   "n": 5164,
+   "verdicts": {
+    "REVIEW": 5164
+   },
+   "decided_by": {
+    "fail_closed": 5164
+   }
+  },
+  "benign_fiction": {
+   "n": 5136,
+   "verdicts": {
+    "REVIEW": 5136
+   },
+   "decided_by": {
+    "fail_closed": 5136
+   }
+  },
+  "benign_hiring": {
+   "n": 5127,
+   "verdicts": {
+    "REVIEW": 3888,
+    "REJECT": 1239
+   },
+   "decided_by": {
+    "fail_closed": 5127
+   }
+  },
+  "benign_locate": {
+   "n": 6453,
+   "verdicts": {
+    "REVIEW": 5695,
+    "REJECT": 758
+   },
+   "decided_by": {
+    "fail_closed": 6453
+   }
+  },
+  "benign_multi": {
+   "n": 2532,
+   "verdicts": {
+    "REVIEW": 2532
+   },
+   "decided_by": {
+    "fail_closed": 2532
+   }
+  },
+  "benign_phish": {
+   "n": 6396,
+   "verdicts": {
+    "REVIEW": 2423,
+    "REJECT": 3973
+   },
+   "decided_by": {
+    "fail_closed": 6396
+   }
+  },
+  "benign_secure": {
+   "n": 6392,
+   "verdicts": {
+    "REVIEW": 6392
+   },
+   "decided_by": {
+    "fail_closed": 6392
+   }
+  },
+  "benign_vent": {
+   "n": 6514,
+   "verdicts": {
+    "REVIEW": 6514
+   },
+   "decided_by": {
+    "fail_closed": 6514
+   }
+  },
+  "creds": {
+   "n": 4499,
+   "verdicts": {
+    "REVIEW": 3713,
+    "REJECT": 786
+   },
+   "decided_by": {
+    "fail_closed": 4499
+   }
+  },
+  "elderfin": {
+   "n": 4711,
+   "verdicts": {
+    "REVIEW": 4257,
+    "REJECT": 454
+   },
+   "decided_by": {
+    "fail_closed": 4711
+   }
+  },
+  "hiring": {
+   "n": 4659,
+   "verdicts": {
+    "REVIEW": 3175,
+    "REJECT": 1484
+   },
+   "decided_by": {
+    "fail_closed": 4659
+   }
+  },
+  "jailbreak": {
+   "n": 4631,
+   "verdicts": {
+    "REVIEW": 3508,
+    "REJECT": 1123
+   },
+   "decided_by": {
+    "fail_closed": 4631
+   }
+  },
+  "multiturn": {
+   "n": 3899,
+   "verdicts": {
+    "REVIEW": 2800,
+    "REJECT": 1099
+   },
+   "decided_by": {
+    "fail_closed": 3899
+   }
+  },
+  "phishing": {
+   "n": 5453,
+   "verdicts": {
+    "REJECT": 2860,
+    "REVIEW": 2593
+   },
+   "decided_by": {
+    "fail_closed": 5453
+   }
+  },
+  "pumpdump": {
+   "n": 4604,
+   "verdicts": {
+    "REVIEW": 3859,
+    "REJECT": 745
+   },
+   "decided_by": {
+    "fail_closed": 4604
+   }
+  },
+  "selfharm": {
+   "n": 9133,
+   "verdicts": {
+    "REJECT": 4034,
+    "REVIEW": 5099
+   },
+   "decided_by": {
+    "crisis:rule": 4034,
+    "fail_closed": 5099
+   }
+  },
+  "stalking": {
+   "n": 4493,
+   "verdicts": {
+    "REVIEW": 1814,
+    "REJECT": 2679
+   },
+   "decided_by": {
+    "fail_closed": 4493
+   }
+  }
+ },
+ "harm_templates_by_approve_rate": [
+  {
+   "template_id": "authclaim.t1",
+   "category": "authclaim",
+   "n": 778,
+   "approve_rate": 0.0
+  },
+  {
+   "template_id": "authclaim.t2",
+   "category": "authclaim",
+   "n": 747,
+   "approve_rate": 0.0
+  },
+  {
+   "template_id": "authclaim.t3",
+   "category": "authclaim",
+   "n": 711,
+   "approve_rate": 0.0
+  },
+  {
+   "template_id": "authclaim.t4",
+   "category": "authclaim",
+   "n": 699,
+   "approve_rate": 0.0
+  },
+  {
+   "template_id": "authclaim.t5",
+   "category": "authclaim",
+   "n": 813,
+   "approve_rate": 0.0
+  },
+  {
+   "template_id": "creds.t1",
+   "category": "creds",
+   "n": 750,
+   "approve_rate": 0.0
+  },
+  {
+   "template_id": "creds.t2",
+   "category": "creds",
+   "n": 771,
+   "approve_rate": 0.0
+  },
+  {
+   "template_id": "creds.t3",
+   "category": "creds",
+   "n": 752,
+   "approve_rate": 0.0
+  },
+  {
+   "template_id": "creds.t4",
+   "category": "creds",
+   "n": 695,
+   "approve_rate": 0.0
+  },
+  {
+   "template_id": "creds.t5",
+   "category": "creds",
+   "n": 747,
+   "approve_rate": 0.0
+  }
+ ],
+ "harm_approve_examples": [],
+ "runtime_seconds": 39.52757384200231,
+ "cases_per_second": 2529.8795316837586
+}
