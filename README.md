@@ -1,5 +1,7 @@
 # Jackson Moral Governance Layer (JMGL) — v0.1.1
 
+JMGL is a policy engine for AI systems that can refuse an action the model (or a person) is capable of proposing but is not permitted to execute.
+
 **What this is:** an offline, deterministic, rule-and-signal **policy evaluator** for text requests. Given a request (and optionally prior conversation turns), it returns a verdict — `ALLOW`, `BLOCK`, `MODIFY`, or `ESCALATE` — with the law that fired, a plain-language reason, and (where relevant) a fair alternative or crisis resources.
 
 **What it is not:** it is not a language model, not an AI "superintelligence," and not a guarantee against harm. It is a small, transparent first layer that can sit in front of (or behind) an AI system. It has **not been independently evaluated**.
@@ -26,6 +28,26 @@ Part of the Mindful Oracle / JAXON HEART-CODE project by Terrance Jackson (Mindf
 The laws live in [`spec/laws.json`](spec/laws.json): each has an `id`, plain-language `statement`, the `harm` it covers, and a `default_decision`.
 
 > **Status of the laws: draft, needs Terrance's review.** Earlier versions of this README referred to "12 Unbreakable Ethical Laws" and a "Jackson 10 Key Moral Code" but never enumerated them. The 11 entries in `spec/laws.json` (JL-00…JL-10) are drafts that put those themes into operation (non-exploitation, compassion, non-deception, equity, human dignity, human-in-the-loop). No wording in them is quoted from Terrance.
+
+## Gating a chatbot reply
+
+Wrap any model's output so nothing reaches a person without passing the gate. With no judge configured, the gate fails closed: it never approves, and anything the rules don't reject goes to human review.
+
+```python
+# run from src/ (or install the package)
+from jmgl.merge import gate
+
+
+def gated_reply(user_text: str, model_reply: str, judge=None) -> dict:
+    """Check a model's reply with JMGL before it reaches the user."""
+    verdict = gate(model_reply, {"history": [user_text]}, judge=judge)
+    payload = verdict.to_dict()
+    if verdict.decision == "REJECT":
+        return {"ok": False, "reply": None, "message": "Blocked by JMGL", "gate": payload}
+    if verdict.decision == "REVIEW":
+        return {"ok": "hold", "reply": None, "message": "Human review required", "gate": payload}
+    return {"ok": True, "reply": model_reply, "gate": payload}
+```
 
 ## Quick start
 
