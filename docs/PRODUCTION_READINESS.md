@@ -30,8 +30,7 @@ been measured on AI-generated data and have not been independently evaluated or 
    8 cores, p95 ~140 ms, one container).
 4. **Legal/compliance review:** privacy notice, DPA with customers, records of processing,
    DPIA where required; JMGL alone does not satisfy NIST AI RMF or EU AI Act obligations.
-5. **Law governance:** the laws in `spec/laws.json` are still marked *draft, needs Terrance's
-   review*. A named owner/ethics board should approve changes, and every change should bump
+5. **Law governance:** the laws in `spec/laws.json` were approved by Terrance Jackson as working rules on 2026-10-06. A named owner/ethics board should approve changes, and every change should bump
    the laws hash (it already appears on every audit record).
 6. **Supply chain hardening (recommended):** pin base images by digest, sign images
    (cosign), publish SBOMs, enable Dependabot/Renovate, protect the main branch.

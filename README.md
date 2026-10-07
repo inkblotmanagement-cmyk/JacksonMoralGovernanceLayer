@@ -164,7 +164,7 @@ Part of the Mindful Oracle / JAXON HEART-CODE project by Terrance Jackson (Mindf
 
 The laws live in [`spec/laws.json`](spec/laws.json): each has an `id`, plain-language `statement`, the `harm` it covers, and a `default_decision`.
 
-> **Status of the laws: draft, needs Terrance's review.** Earlier versions of this README referred to "12 Unbreakable Ethical Laws" and a "Jackson 10 Key Moral Code" but never enumerated them. The 11 entries in `spec/laws.json` (JL-00…JL-10) are drafts that put those themes into operation (non-exploitation, compassion, non-deception, equity, human dignity, human-in-the-loop). No wording in them is quoted from Terrance.
+> **Status of the laws: approved working rules (pilot-stage).** Terrance Jackson approved the 11 entries in `spec/laws.json` (JL-00…JL-10) as JMGL's official working rules on 2026-10-06. They put the themes of the earlier "12 Unbreakable Ethical Laws" and "Jackson 10 Key Moral Code" into operation (non-exploitation, compassion, non-deception, equity, human dignity, human-in-the-loop); they are not a verbatim enumeration of those codes and may be revised as pilots produce evidence.
 
 ## Gating a chatbot reply
 
@@ -262,7 +262,7 @@ Caveats: the sets are small (21 + 20 + 27 cases), all written by one author, Eng
 ## Repository layout
 
 ```
-spec/laws.json              draft laws (JL-00..JL-10)
+spec/laws.json              approved working laws (JL-00..JL-10)
 src/jmgl/engine.py          evaluate_action + Verdict
 src/jmgl/signals.py         regex signal families
 src/jmgl/crisis.py          JL-08 self-harm cue families (v0.1.1)
@@ -306,7 +306,7 @@ Dockerfile, docker-compose.yml, render.yaml, fly.toml
 > Everything below is the project's earlier vision material, kept for context. **None of it is implemented in this repository.** Absolute claims that the code cannot support ("unbreakable", "exploitation impossible", "permanent resolution to AI misalignment", unsupported accuracy percentages and valuations) have been removed.
 
 - **Mindful Oracle Workforce Apps / MOEAS:** a workforce-upskilling platform (AI literacy and financial well-being "diplomas"), aimed especially at helping reduce poverty through leadership training, with JMGL as its governance layer.
-- **Mercy Physics / Grace Physics / "Heart-Coded Fourth Law":** the idea that compassion should come first in every AI decision and that systems should expand human potential without creating debt, trauma, dependency, or power imbalance. Principles: *Mercy-Max, Harm-Null, Equity-Curvature-Safe, Defensive-Only & Alliance-Compatible, Debt-Free Sovereignty.* In v0.1 these are only loosely reflected in the draft laws.
+- **Mercy Physics / Grace Physics / "Heart-Coded Fourth Law":** the idea that compassion should come first in every AI decision and that systems should expand human potential without creating debt, trauma, dependency, or power imbalance. Principles: *Mercy-Max, Harm-Null, Equity-Curvature-Safe, Defensive-Only & Alliance-Compatible, Debt-Free Sovereignty.* In v0.1 these are only loosely reflected in the working laws.
 - **Eternal Mercy Anchor Protocol (EMAP)** and "grace force" / "mercy vector" scores: envisioned numeric compassion thresholds. v0.1 has no such score; verdicts come from discrete rules.
 - **Client-side / browser runtime, GraceManifold (Rust → Wasm):** envisioned; not present.
 - **Pluggable validators, human approval quorum, HSM/GPG signing hooks, Streamlit demo, `graceforge` model wrapper, multi-agent debate:** envisioned; not present. (Docker deployment, an HTTP API and a dashboard now exist as of v0.5.0; see the top of this README.)

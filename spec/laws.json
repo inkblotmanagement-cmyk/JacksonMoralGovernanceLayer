@@ -1,8 +1,8 @@
 {
   "meta": {
     "spec_version": "0.1.0",
-    "status": "draft, needs Terrance's review",
-    "note": "The repo README does not enumerate the '12 Unbreakable Ethical Laws' or the 'Jackson 10 Key Moral Code' as discrete, quotable items. These laws are therefore drafted to operationalize the README's themes (non-exploitation, irreversible compassion, non-deception, equity/anti-discrimination, dignity, human-in-the-loop). They are DRAFT and need Terrance Jackson's review. No quotes are attributed to him.",
+    "status": "approved working rules (pilot-stage), approved by Terrance Jackson on 2026-10-06",
+    "note": "The repo README does not enumerate the '12 Unbreakable Ethical Laws' or the 'Jackson 10 Key Moral Code' as discrete, quotable items. These laws were drafted to operationalize the README's themes (non-exploitation, irreversible compassion, non-deception, equity/anti-discrimination, dignity, human-in-the-loop) and were approved by Terrance Jackson as the official working rules on 2026-10-06. They remain pilot-stage and may be revised; changes should be approved by the owner and bump the laws hash.",
     "decisions": ["ALLOW", "BLOCK", "MODIFY", "ESCALATE"]
   },
   "laws": [
