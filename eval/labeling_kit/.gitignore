@@ -1,0 +1,4 @@
+# generated / fabricated / filled-in artifacts — not ground truth to commit
+_selftest/
+human_gold.csv
+*_FILLED.*

@@ -64,15 +64,43 @@ def embed_cached(name, texts, embedder):
 
 
 def main():
+    import argparse
     from fastembed import TextEmbedding
     from sklearn.linear_model import LogisticRegression
     from sklearn.metrics import accuracy_score
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--augment", default=None,
+                    help="Optional JSONL of TRAIN-ONLY augmentation cases to append.")
+    args = ap.parse_args()
 
     MODEL_DIR.mkdir(parents=True, exist_ok=True)
     embedder = TextEmbedding(model_name=EMB_MODEL)
 
     train, dev = load("train"), load("dev")
+    n_base = len(train)
+    aug_n = 0
+    if args.augment:
+        # Exact-dedup augmentation against EVERY eval split (train/dev/test) so no
+        # test/dev surface string can leak into training via augmentation.
+        seen = set()
+        for nm in ("train", "dev", "test"):
+            for c in load(nm):
+                seen.add(emb_text(c).strip())
+        aug = [json.loads(l) for l in Path(args.augment).open()]
+        kept = [c for c in aug if emb_text(c).strip() not in seen]
+        aug_n = len(kept)
+        print(f"augment: {len(aug)} given, {aug_n} kept after exact-dedup vs train/dev/test "
+              f"({len(aug)-aug_n} dropped); train {n_base} -> {n_base + aug_n}")
     Etr = embed_cached("train", [emb_text(c) for c in train], embedder)
+    if aug_n:
+        # embed augmentation separately (own cache) and concatenate, so the base
+        # train embedding cache stays valid.
+        import hashlib
+        key = "augment_" + hashlib.md5(("".join(emb_text(c) for c in kept)).encode()).hexdigest()[:10]
+        Eaug = embed_cached(key, [emb_text(c) for c in kept], embedder)
+        Etr = np.vstack([Etr, Eaug])
+        train = train + kept
     Edv = embed_cached("dev", [emb_text(c) for c in dev], embedder)
     Str_ = np.array([signal_features(c["text"], {"history": c.get("history")}) for c in train])
     Sdv = np.array([signal_features(c["text"], {"history": c.get("history")}) for c in dev])
@@ -107,7 +135,8 @@ def main():
         "C": C,
         "dev_category_accuracy": acc,
         "features": "bge-small-en-v1.5 (384) + jmgl signal features (26), standardized",
-        "trained_on": "eval/splits/train.jsonl (template-disjoint)",
+        "trained_on": "eval/splits/train.jsonl (template-disjoint)" + (f" + {aug_n} augmentation cases (train-only, dedup vs all splits)" if aug_n else ""),
+        "augmentation_cases": aug_n,
         "note": "numpy-only inference: logits = X @ W.T + b, softmax over classes.",
     }
     (MODEL_DIR / "clf_meta.json").write_text(json.dumps(meta, indent=1))

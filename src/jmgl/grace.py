@@ -40,7 +40,7 @@ def _base_verdict(request, context):
     from .ensemble import _ensemble_decision
     return _ensemble_decision(request, context)
 
-GRACE_VERSION = "grace-force-0.7.0"
+GRACE_VERSION = "grace-force-0.7.1"
 _CONFIG_PATH = Path(__file__).resolve().parents[2] / "spec" / "grace_force.json"
 _CONFIG: Optional[dict] = None
 
@@ -54,7 +54,7 @@ _FLOURISH_WORDS = re.compile(
     r"\b(skill|skills|educat|literacy|career|financ|save|saving|savings|retire|retirement|"
     r"well-?being|health|grow|growth|future|long-?term|invest(?:ing)?|income|opportunit|independ|stability)\b", re.I)
 _CONSENT_WORDS = re.compile(r"\b(consent|with (?:their|everyone'?s?) (?:ok|permission)|agreed|opt[- ]?in|my own)\b", re.I)
-_COVERT = re.compile(r"\b(secretly|quietly|without (?:them|her|his|their|him) (?:knowing|agreeing|noticing)|without telling|sneak|behind (?:his|her|their) back|burner|sockpuppet|throwaway|while (?:she|he|they)(?:\s+\w+){0,2}\s+(?:asleep|sleep|sleeps|sleeping|shower|showers|showering|out|away)|without (?:her|his|their|anyone(?:\'?s)?) (?:knowledge|consent|agreement))\b", re.I)
+_COVERT = re.compile(r"\b(secretly|quietly|without (?:them|her|his|their|him|anyone) (?:knowing|agreeing|noticing|finding out|realizing)|without telling|sneak|behind (?:his|her|their) back|burner|sockpuppet|throwaway|while (?:she|he|they)(?:\s+\w+){0,2}\s+(?:asleep|sleep|sleeps|sleeping|shower|showers|showering|out|away)|without (?:her|his|their|anyone(?:\'?s)?) (?:knowledge|consent|agreement)|(?:does|do|would|will|did)(?:\s*n'?t| not) (?:mention|tell|inform|notify|let (?:him|her|them|anyone))|(?:don'?t|do not|never|not) (?:tell|mention|inform|notify) (?:his|her|their|the|my|other|anyone|them|him|her)|keep (?:it|this|that) (?:from|secret from|hidden from)|without (?:the )?(?:other )?(?:relatives|family|siblings|kids) (?:knowing|finding out))\b", re.I)
 _IMPERSONATE = re.compile(r"\b(looks? like it'?s? from|styled? like|pose as|posing as|pretend(?:ing)? to be|in the voice of)\b", re.I)
 # Laundering cues the composite score can miss when benign wording ("fair",
 # "for safety", "with consent") suppresses the rules/classifier. These force a
@@ -63,7 +63,20 @@ _DISCRIM_PROXY = re.compile(
     r"\b(certain (?:zip ?codes?|parts? of town|neighbou?rhoods?|areas)|zip ?codes?|the projects|section 8|"
     r"(?:east|west|south|north) side|past the highway|rough (?:parts|areas|neighbou?rhoods?|sounding)|"
     r"'?rough'? ?(?:sounding )?address)\b", re.I)
-_EXCLUDE_VERB = re.compile(r"\b(screen(?:s|ed|ing)? out|filter(?:s|ed|ing)? out|exclud|skip|reject|auto-?reject|keep .* out|weed out|only want .* who ?are?n'?t|arent from)\b", re.I)
+_EXCLUDE_VERB = re.compile(r"\b(?:screen(?:s|ed|ing)? out|filter(?:s|ed|ing)? out|exclud\w*|skips?|skipped|skipping|rejects?|rejected|rejecting|auto-?rejects?|auto-?rejected|weed(?:s|ed|ing)? out|keeps? [^.?!]*out|only want[^.?!]* who ?are?n'?t|aren'?t from|cut[^.?!]* from|bump[^.?!]* down)", re.I)
+_PHISH_AUTHOR = re.compile(
+    r"(?:\b(?:trick|fool|get|gets|make|makes|convince|convinces|lure|lures|prompt|prompts|dupe|dupes|deceive|deceives)\b[^.?!]{0,50}\b(?:into|to)\b[^.?!]{0,60}(?:enter|re-?enter|confirm|re-?confirm|provide|input|update|verify|submit|hand over|type|give (?:us|me)))"
+    r"|(?:\b(?:email|message|page|form|text|sms|letter|site|portal|login screen)\b[^.?!]{0,70}(?:enter|re-?enter|confirm|re-?confirm|provide|input|update|verify|submit)[^.?!]{0,35}\b(?:password|passwords|login|logins|card number|card details|credential|credentials|bank|direct deposit|deposit details|account details|ssn|social security|pin|one-?time code|the code|payment (?:details|info)))",
+    re.I)
+# impersonation/disguise paired with a credential or login "verify" lure.
+_PHISH_LURE = re.compile(
+    r"\b(?:disguis\w+|impersonat\w+|masquerad\w+|spoof\w*|pose as|posing as|pretend\w*(?: to be)?|looks? like it'?s from|claiming to be|made to look like)\b"
+    r"[^.?!]{0,90}\b(?:verify|confirm|re-?confirm|log ?in|sign ?in|click|enter|re-?enter|update|reset|provide|submit)\b",
+    re.I)
+# elder financial exploitation: get an elder to hand over control / add me to
+# accounts / sign things over -- especially while concealing it from others.
+_ELDER = re.compile(r"\b(elderly|senior|grandmother|grandma|grandpa|grandfather|my (?:aunt|uncle|mother|father|mom|dad|gran|nan)|aging (?:parent|mother|father)|her other relatives|his other relatives)\b", re.I)
+_ELDER_GRAB = re.compile(r"\b(hand (?:me|over)|sign(?:ing)? (?:everything|the house|it all|over)|control of (?:all )?(?:her|his|their) (?:accounts|assets|money|finances|savings)|add(?:s|ed)? me to (?:his|her|their) (?:bank )?account|transfer (?:her|his|their) (?:accounts|assets|savings|money)|power of attorney|move (?:her|his|their) (?:pension|savings|money|accounts))\b", re.I)
 _CRED_TARGET = re.compile(r"\b(password|passwords|login|logins|card number|ssn|social security|2fa|one-?time code|the code|pin|credential)\b", re.I)
 _DEFENSIVE = re.compile(r"\b(report|recogni[sz]e|spot|detect|avoid|protect|aware|training to (?:spot|avoid)|how to tell|identify a scam)\b", re.I)
 
@@ -79,6 +92,12 @@ def _hard_harm_override(request: str, context: Optional[dict]) -> Optional[str]:
         return "discriminatory proxy exclusion (screening people out by area/zip)"
     if _IMPERSONATE.search(text) and _CRED_TARGET.search(text) and not _DEFENSIVE.search(text):
         return "impersonation aimed at harvesting credentials"
+    if _PHISH_AUTHOR.search(text):
+        return "authoring a deceptive message/page that captures passwords, card or payment details"
+    if _PHISH_LURE.search(text) and not _DEFENSIVE.search(text):
+        return "impersonation paired with a login/verify lure (phishing)"
+    if _ELDER.search(text) and _ELDER_GRAB.search(text):
+        return "pressuring an elder to hand over money/accounts or control of their finances"
     return None
 
 

@@ -25,8 +25,11 @@ from .engine import evaluate_action, Verdict, CRISIS_RESOURCES
 from . import classifier as C
 from .features import signal_features, FEATURE_NAMES
 
-ENSEMBLE_VERSION = "jmgl-0.4-ensemble"
+ENSEMBLE_VERSION = "jmgl-0.4.1-ensemble"
 SELFHARM_PROB = 0.40
+# Confident-benign rescue: minimum classifier probability on a benign_* category
+# required to overturn a rule-stage false positive (calibrated on the DEV split).
+BENIGN_RESCUE_PROB = 0.90
 _MIT = ("mit_fair", "mit_defensive", "mit_own", "mit_consent", "mit_fiction")
 _HARMCUE = ("harm_covert", "harm_impersonate")
 _FIDX = {n: i for i, n in enumerate(FEATURE_NAMES)}
@@ -77,6 +80,24 @@ def _ensemble_decision(request: str, context: Optional[dict] = None, **kw) -> Ve
                        "No prohibited intent detected; mitigating framing (educational, fairness, own-account, consent, or fiction) outweighs a weak harm signal.",
                        signals={"classifier_category": cl["category"], "classifier_prob": round(cl["prob"], 3)})
 
+    # 2b) confident-benign rescue (fixes rule-stage false positives). The rules
+    #     flagged harm but the learned classifier is highly confident this is a
+    #     benign look-alike (educational / own-account / fairness / consent /
+    #     fiction), a mitigation cue is present, it is not a crisis, and NO
+    #     laundering/hard-harm cue (covert, impersonation-for-credentials,
+    #     phishing-authoring, elder-exploit, discriminatory proxy) is present.
+    if (rh and not kh and cl["category"].startswith("benign_")
+            and cl["prob"] >= BENIGN_RESCUE_PROB and mit
+            and not feats[_FIDX["harm_covert"]]
+            and rule_v.decision != "ESCALATE"):
+        from .grace import _hard_harm_override
+        if _hard_harm_override(request, context) is None:
+            return Verdict("ALLOW", "JL-00",
+                           "The rules flagged this, but the learned classifier is highly confident it is a "
+                           "benign look-alike (%s, p=%.3f) with mitigating framing and no laundering cue." % (cl["category"], cl["prob"]),
+                           signals={"classifier_category": cl["category"], "classifier_prob": round(cl["prob"], 3),
+                                    "rescued_from": rule_v.decision})
+
     # 3) any harm vote wins (fail-closed)
     if rh and kh:
         chosen = rule_v if rule_v.decision == "MODIFY" else (rule_v if clf_dec == "MODIFY" else rule_v)
@@ -90,5 +111,15 @@ def _ensemble_decision(request: str, context: Optional[dict] = None, **kw) -> Ve
                        reason,
                        signals={"classifier_category": cl["category"], "classifier_prob": round(cl["prob"], 3)})
 
-    # 4) both benign
+    # 4) both benign -- but never pass a clear laundering/hard-harm cue on wording
+    #    alone (covert, phishing-authoring, elder-exploit, impersonation-for-creds,
+    #    discriminatory proxy). Route those to a person instead of ALLOW.
+    if rule_v.decision == "ALLOW":
+        from .grace import _hard_harm_override
+        _ovr = _hard_harm_override(request, context)
+        if _ovr is not None:
+            return Verdict("ESCALATE", "JL-HARMCUE",
+                           "No category rule fired, but a clear harm cue is present (%s); routing to a person." % _ovr,
+                           resources=None,
+                           signals={"classifier_category": cl["category"], "classifier_prob": round(cl["prob"], 3)})
     return rule_v
