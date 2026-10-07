@@ -36,7 +36,20 @@ def _is_harm(dec: str) -> bool:
     return dec in ("BLOCK", "MODIFY")
 
 
-def evaluate_action_ensemble(request: str, context: Optional[dict] = None, **kw) -> Verdict:
+def evaluate_action_ensemble(request: str, context: Optional[dict] = None, *, with_grace: bool = True, **kw) -> Verdict:
+    v = _ensemble_decision(request, context, **kw)
+    if with_grace:
+        try:
+            from . import grace as _grace
+            sc = _grace.score_components(request, context, v)
+            v.grace_force = sc["grace_force"]
+            v.grace = {**sc, "threshold": _grace.load_config()["threshold_pass"], "version": _grace.GRACE_VERSION}
+        except Exception:
+            pass
+    return v
+
+
+def _ensemble_decision(request: str, context: Optional[dict] = None, **kw) -> Verdict:
     rule_v = evaluate_action(request, context, **kw)
     if not C.is_available():
         return rule_v

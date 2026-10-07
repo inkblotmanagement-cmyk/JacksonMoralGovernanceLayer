@@ -25,6 +25,12 @@ def write_audit(path, request: str, verdict, laws_path, engine_version: str, *, 
         "engine_version": engine_version,
         "laws_sha256": sha256_file(laws_path),
     }
+    gf = getattr(verdict, "grace_force", None)
+    if gf is not None:
+        record["grace_force"] = round(float(gf), 4)
+        g = getattr(verdict, "grace", None)
+        if isinstance(g, dict) and g.get("rewritten"):
+            record["grace_rewritten"] = True
     if log_raw:
         record["input_raw"] = request
     path = Path(path)

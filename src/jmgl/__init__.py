@@ -10,12 +10,15 @@ v0.4 ensemble (optional): rules + a learned category classifier. It needs numpy
 """
 from .engine import evaluate_action, Verdict, ENGINE_VERSION
 
-__all__ = ["evaluate_action", "evaluate_action_ensemble", "Verdict",
-           "ENGINE_VERSION", "ENSEMBLE_VERSION"]
+__all__ = ["evaluate_action", "evaluate_action_ensemble", "evaluate_grace_force",
+           "Verdict", "ENGINE_VERSION", "ENSEMBLE_VERSION", "GRACE_VERSION"]
 
 
 def __getattr__(name):
     if name in ("evaluate_action_ensemble", "ENSEMBLE_VERSION"):
         from . import ensemble
         return getattr(ensemble, name)
+    if name in ("evaluate_grace_force", "GRACE_VERSION"):
+        from . import grace
+        return getattr(grace, name)
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

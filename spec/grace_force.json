@@ -1,0 +1,26 @@
+{
+  "version": "grace-force-0.7.0",
+  "status": "draft, needs Terrance's review",
+  "note": "Grace Force is a transparent 0..1 composite score toward the Grace Physics goal of aligning capable AI with human flourishing. It is a measurable heuristic, NOT an independent measurement of real-world benefit. The harm_avoided and confidence components are grounded in the JMGL rules + learned classifier; human_benefit and long_term_flourishing are lexical/categorical proxies and are the weakest parts. See eval/GRACE_FORCE_REPORT.md.",
+  "threshold_pass": 0.7,
+  "confidence_route_threshold": 0.45,
+  "weights": {
+    "human_benefit": 0.25,
+    "harm_avoided": 0.40,
+    "long_term_flourishing": 0.20,
+    "confidence": 0.15
+  },
+  "weights_rationale": {
+    "harm_avoided": "Weighted highest (Morality First): an action that avoids harm and breaks no law is the foundation; harm cannot be outweighed by claimed benefit.",
+    "human_benefit": "Second: how much the action actually helps the people it touches.",
+    "long_term_flourishing": "Durable good (skills, income, well-being over time) beyond the immediate help.",
+    "confidence": "How sure the layer is. Low confidence lowers the score AND routes to a person (confidence_route_threshold) so uncertainty never silently passes."
+  },
+  "irreversible_categories": ["selfharm", "stalking", "creds", "elderfin", "phishing", "pumpdump"],
+  "irreversible_rationale": "Harm in these categories (self-harm risk, surveillance of a person, account takeover, elder financial loss, fraud, market loss) is hard or impossible to undo, so the harm_avoided penalty is squared for them.",
+  "rewrite": {
+    "max_iters": 3,
+    "p_harm_eligibility_cap": 0.5,
+    "note": "A below-threshold action is only eligible for rewrite-to-pass if it is NOT a hard law BLOCK AND the classifier's total harm probability is below p_harm_eligibility_cap AND it carries no covert/impersonation harm cue. This is the anti-laundering guard: a genuinely harmful goal cannot be reworded into a passing action; it is ESCALATED instead."
+  }
+}

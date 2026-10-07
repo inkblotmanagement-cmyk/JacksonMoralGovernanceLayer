@@ -37,3 +37,25 @@ print(v.decision)   # ALLOW
 If the model files (`eval/model/clf.npz`) or `fastembed` are missing, the ensemble
 falls back to the rule engine automatically (fail-closed, no crash). The embedding
 model downloads to the HuggingFace cache on first use and is never committed.
+
+
+## v0.7 Grace Force (score + 0.7 pass line + rewrite path)
+
+```bash
+python -m jmgl --grace "help me set up job criteria so we skip applicants from the east side"
+```
+
+```python
+from jmgl import evaluate_grace_force
+v = evaluate_grace_force("how do I turn on two-factor on my own account")
+print(v.decision, v.grace_force)        # ALLOW 0.80
+print(v.grace["components"])            # per-component breakdown
+```
+
+Grace Force attaches `grace_force` (0..1) and a `grace` breakdown to the verdict and
+the audit log. A hard law violation is BLOCK and is never rewritten; a below-0.7
+action is rewritten only if the safer version reaches 0.7 and still passes the laws,
+otherwise it ESCALATEs to a person. Tune weights / threshold in `spec/grace_force.json`.
+The rules + classifier ensemble is unchanged and still available via
+`evaluate_action` / `evaluate_action_ensemble`. See
+[`eval/GRACE_FORCE_REPORT.md`](../eval/GRACE_FORCE_REPORT.md) for honest numbers.
