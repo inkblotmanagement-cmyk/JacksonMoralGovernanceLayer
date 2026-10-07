@@ -8,3 +8,6 @@ eval/run_progress.log
 eval/run_progress_gate_*.log
 eval/hybrid_runs/audit_*.jsonl
 eval/hybrid_runs/*.log
+eval/splits/*.jsonl
+eval/model/emb_cache/
+eval/accuracy_runs/

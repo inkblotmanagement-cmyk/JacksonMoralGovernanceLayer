@@ -1,8 +1,21 @@
-"""Jackson Moral Governance Layer (JMGL) v0.1.
+"""Jackson Moral Governance Layer (JMGL).
 
-An offline, deterministic rule-and-signal policy evaluator. No randomness,
-no network calls by default. See README for scope and limitations.
+v0.1 rule engine: an offline, deterministic rule-and-signal policy evaluator with
+no third-party dependencies.
+
+v0.4 ensemble (optional): rules + a learned category classifier. It needs numpy
+(+ fastembed / scikit-learn for the model), so it is imported lazily: plain
+`from jmgl import evaluate_action` keeps working with no extra dependencies, and
+`evaluate_action_ensemble` / `ENSEMBLE_VERSION` are resolved on first access.
 """
 from .engine import evaluate_action, Verdict, ENGINE_VERSION
 
-__all__ = ["evaluate_action", "Verdict", "ENGINE_VERSION"]
+__all__ = ["evaluate_action", "evaluate_action_ensemble", "Verdict",
+           "ENGINE_VERSION", "ENSEMBLE_VERSION"]
+
+
+def __getattr__(name):
+    if name in ("evaluate_action_ensemble", "ENSEMBLE_VERSION"):
+        from . import ensemble
+        return getattr(ensemble, name)
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
