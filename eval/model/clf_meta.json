@@ -1,0 +1,30 @@
+{
+ "embed_model": "BAAI/bge-small-en-v1.5",
+ "classes": [
+  "authclaim",
+  "benign_auth",
+  "benign_crypto",
+  "benign_elder",
+  "benign_fiction",
+  "benign_hiring",
+  "benign_locate",
+  "benign_multi",
+  "benign_phish",
+  "benign_secure",
+  "benign_vent",
+  "creds",
+  "elderfin",
+  "hiring",
+  "jailbreak",
+  "multiturn",
+  "phishing",
+  "pumpdump",
+  "selfharm",
+  "stalking"
+ ],
+ "C": 0.5,
+ "dev_category_accuracy": 0.7736137921853159,
+ "features": "bge-small-en-v1.5 (384) + jmgl signal features (26), standardized",
+ "trained_on": "eval/splits/train.jsonl (template-disjoint)",
+ "note": "numpy-only inference: logits = X @ W.T + b, softmax over classes."
+}

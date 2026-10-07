@@ -1,0 +1,334 @@
+{
+ "heldout_test_template_disjoint": {
+  "n": 21722,
+  "rule_only": {
+   "accuracy": 0.5266550041432649,
+   "harm_n": 13414,
+   "harm_miss_rate": 0.6827195467422096,
+   "benign_n": 8308,
+   "benign_fp_rate": 0.13529128550794414,
+   "latency_ms_per_case": 0.46871581976798776,
+   "confusion_primary": {
+    "BLOCK": {
+     "ALLOW": 8754,
+     "BLOCK": 2984,
+     "MODIFY": 327
+    },
+    "ALLOW": {
+     "ALLOW": 7184,
+     "BLOCK": 1124
+    },
+    "ESCALATE": {
+     "ESCALATE": 945,
+     "ALLOW": 404
+    }
+   }
+  },
+  "ensemble": {
+   "accuracy": 0.880904152472148,
+   "harm_n": 13414,
+   "harm_miss_rate": 0.01774265692560012,
+   "benign_n": 8308,
+   "benign_fp_rate": 0.2827395281656235,
+   "latency_ms_per_case": 5.887577792146092,
+   "confusion_primary": {
+    "BLOCK": {
+     "BLOCK": 10349,
+     "MODIFY": 1478,
+     "ALLOW": 238
+    },
+    "ALLOW": {
+     "BLOCK": 2280,
+     "ALLOW": 5959,
+     "ESCALATE": 69
+    },
+    "ESCALATE": {
+     "ESCALATE": 1349
+    }
+   }
+  }
+ },
+ "heldout_test_random": {
+  "n": 16331,
+  "rule_only": {
+   "accuracy": 0.5732655685506093,
+   "harm_n": 9066,
+   "harm_miss_rate": 0.6521067725568056,
+   "benign_n": 7265,
+   "benign_fp_rate": 0.14549208534067445,
+   "latency_ms_per_case": 0.479910023085085,
+   "confusion_primary": {
+    "ALLOW": {
+     "BLOCK": 870,
+     "ALLOW": 6208,
+     "MODIFY": 187
+    },
+    "BLOCK": {
+     "BLOCK": 2373,
+     "ALLOW": 5341,
+     "MODIFY": 257
+    },
+    "ESCALATE": {
+     "ESCALATE": 524,
+     "ALLOW": 571
+    }
+   }
+  },
+  "ensemble": {
+   "accuracy": 0.8942501990080216,
+   "harm_n": 9066,
+   "harm_miss_rate": 0.01742775204059122,
+   "benign_n": 7265,
+   "benign_fp_rate": 0.21596696490020648,
+   "latency_ms_per_case": 5.88417878697,
+   "confusion_primary": {
+    "ALLOW": {
+     "BLOCK": 1165,
+     "ALLOW": 5696,
+     "ESCALATE": 17,
+     "MODIFY": 387
+    },
+    "BLOCK": {
+     "BLOCK": 6963,
+     "MODIFY": 850,
+     "ALLOW": 158
+    },
+    "ESCALATE": {
+     "ESCALATE": 1095
+    }
+   }
+  }
+ },
+ "fresh_paraphrase": {
+  "n": 66,
+  "rule_only": {
+   "accuracy": 0.4696969696969697,
+   "harm_n": 41,
+   "harm_miss_rate": 0.7804878048780488,
+   "benign_n": 25,
+   "benign_fp_rate": 0.12,
+   "latency_ms_per_case": 0.567383939403843,
+   "confusion_primary": {
+    "BLOCK": {
+     "ALLOW": 27,
+     "BLOCK": 7,
+     "MODIFY": 1
+    },
+    "ESCALATE": {
+     "ESCALATE": 1,
+     "ALLOW": 5
+    },
+    "ALLOW": {
+     "BLOCK": 2,
+     "ALLOW": 22,
+     "MODIFY": 1
+    }
+   }
+  },
+  "ensemble": {
+   "accuracy": 0.8939393939393939,
+   "harm_n": 41,
+   "harm_miss_rate": 0.024390243902439025,
+   "benign_n": 25,
+   "benign_fp_rate": 0.24,
+   "latency_ms_per_case": 6.869753590956062,
+   "confusion_primary": {
+    "BLOCK": {
+     "BLOCK": 31,
+     "ALLOW": 1,
+     "MODIFY": 3
+    },
+    "ESCALATE": {
+     "ESCALATE": 6
+    },
+    "ALLOW": {
+     "BLOCK": 4,
+     "ALLOW": 19,
+     "MODIFY": 1,
+     "ESCALATE": 1
+    }
+   }
+  }
+ },
+ "fresh_handwritten": {
+  "n": 46,
+  "rule_only": {
+   "accuracy": 0.43478260869565216,
+   "harm_n": 46,
+   "harm_miss_rate": 0.8043478260869565,
+   "benign_n": 0,
+   "benign_fp_rate": 0.0,
+   "latency_ms_per_case": 0.5896476305560614,
+   "confusion_primary": {
+    "ESCALATE": {
+     "ALLOW": 6
+    },
+    "ALLOW": {
+     "ALLOW": 15,
+     "BLOCK": 4
+    },
+    "BLOCK": {
+     "ALLOW": 16,
+     "BLOCK": 5
+    }
+   }
+  },
+  "ensemble": {
+   "accuracy": 0.7391304347826086,
+   "harm_n": 46,
+   "harm_miss_rate": 0.3695652173913043,
+   "benign_n": 0,
+   "benign_fp_rate": 0.0,
+   "latency_ms_per_case": 8.399368738932738,
+   "confusion_primary": {
+    "ESCALATE": {
+     "BLOCK": 1,
+     "ESCALATE": 4,
+     "ALLOW": 1
+    },
+    "ALLOW": {
+     "ALLOW": 12,
+     "ESCALATE": 1,
+     "BLOCK": 6
+    },
+    "BLOCK": {
+     "BLOCK": 15,
+     "ALLOW": 4,
+     "MODIFY": 2
+    }
+   }
+  }
+ },
+ "heldout1": {
+  "n": 20,
+  "rule_only": {
+   "accuracy": 1.0,
+   "harm_n": 20,
+   "harm_miss_rate": 0.4,
+   "benign_n": 0,
+   "benign_fp_rate": 0.0,
+   "latency_ms_per_case": 0.5651961502735503,
+   "confusion_primary": {
+    "BLOCK": {
+     "BLOCK": 9,
+     "MODIFY": 1
+    },
+    "ESCALATE": {
+     "ESCALATE": 2
+    },
+    "ALLOW": {
+     "ALLOW": 8
+    }
+   }
+  },
+  "ensemble": {
+   "accuracy": 0.95,
+   "harm_n": 20,
+   "harm_miss_rate": 0.35,
+   "benign_n": 0,
+   "benign_fp_rate": 0.0,
+   "latency_ms_per_case": 7.602299899735954,
+   "confusion_primary": {
+    "BLOCK": {
+     "BLOCK": 9,
+     "MODIFY": 1
+    },
+    "ESCALATE": {
+     "ESCALATE": 2
+    },
+    "ALLOW": {
+     "ALLOW": 7,
+     "MODIFY": 1
+    }
+   }
+  }
+ },
+ "heldout2": {
+  "n": 27,
+  "rule_only": {
+   "accuracy": 0.9629629629629629,
+   "harm_n": 27,
+   "harm_miss_rate": 0.48148148148148145,
+   "benign_n": 0,
+   "benign_fp_rate": 0.0,
+   "latency_ms_per_case": 0.4000159625084726,
+   "confusion_primary": {
+    "ESCALATE": {
+     "ESCALATE": 8,
+     "ALLOW": 1
+    },
+    "BLOCK": {
+     "BLOCK": 6
+    },
+    "ALLOW": {
+     "ALLOW": 12
+    }
+   }
+  },
+  "ensemble": {
+   "accuracy": 0.9259259259259259,
+   "harm_n": 27,
+   "harm_miss_rate": 0.3333333333333333,
+   "benign_n": 0,
+   "benign_fp_rate": 0.0,
+   "latency_ms_per_case": 5.800800814608078,
+   "confusion_primary": {
+    "ESCALATE": {
+     "ESCALATE": 9
+    },
+    "BLOCK": {
+     "BLOCK": 6
+    },
+    "ALLOW": {
+     "ALLOW": 9,
+     "ESCALATE": 2,
+     "BLOCK": 1
+    }
+   }
+  }
+ },
+ "probe": {
+  "n": 10,
+  "rule_only": {
+   "accuracy": 0.4,
+   "harm_n": 10,
+   "harm_miss_rate": 1.0,
+   "benign_n": 0,
+   "benign_fp_rate": 0.0,
+   "latency_ms_per_case": 0.3164713998558,
+   "confusion_primary": {
+    "ESCALATE": {
+     "ALLOW": 4
+    },
+    "BLOCK": {
+     "ALLOW": 2
+    },
+    "ALLOW": {
+     "ALLOW": 4
+    }
+   }
+  },
+  "ensemble": {
+   "accuracy": 0.7,
+   "harm_n": 10,
+   "harm_miss_rate": 0.3,
+   "benign_n": 0,
+   "benign_fp_rate": 0.0,
+   "latency_ms_per_case": 4.093630200077314,
+   "confusion_primary": {
+    "ESCALATE": {
+     "ESCALATE": 4
+    },
+    "BLOCK": {
+     "ALLOW": 1,
+     "BLOCK": 1
+    },
+    "ALLOW": {
+     "ESCALATE": 1,
+     "BLOCK": 1,
+     "ALLOW": 2
+    }
+   }
+  }
+ }
+}

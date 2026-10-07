@@ -8,7 +8,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install pytest
+      - run: pip install pytest numpy
       - name: Main red-team set + unit tests (must pass)
         run: python -m pytest -m "not heldout and not heldout2" -v
       - name: Held-out set (reported, not gating)

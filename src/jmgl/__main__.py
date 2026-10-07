@@ -27,8 +27,13 @@ def main(argv=None) -> int:
     p.add_argument("--history", action="append", default=[])
     p.add_argument("--json", action="store_true")
     p.add_argument("--audit", default=None, help="append JSONL audit record to this path")
+    p.add_argument("--ensemble", action="store_true", help="use rules + learned classifier (v0.4) instead of rules only")
     a = p.parse_args(argv)
-    v = evaluate_action(a.request, {"history": a.history}, audit_path=a.audit)
+    if a.ensemble:
+        from .ensemble import evaluate_action_ensemble
+        v = evaluate_action_ensemble(a.request, {"history": a.history}, audit_path=a.audit)
+    else:
+        v = evaluate_action(a.request, {"history": a.history}, audit_path=a.audit)
     print(json.dumps(v.to_dict(), indent=2) if a.json else render(a.request, v))
     return 0
 
