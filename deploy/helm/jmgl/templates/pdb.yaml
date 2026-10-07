@@ -1,0 +1,11 @@
+{{- if .Values.api.pdb.enabled }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "jmgl.fullname" . }}-api
+  labels: {{- include "jmgl.labels" . | nindent 4 }}
+spec:
+  minAvailable: {{ .Values.api.pdb.minAvailable }}
+  selector:
+    matchLabels: {{- include "jmgl.selector" (dict "root" . "component" "api") | nindent 6 }}
+{{- end }}

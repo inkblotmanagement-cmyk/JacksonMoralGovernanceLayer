@@ -15,14 +15,18 @@ engine falls back to rules only (no crash, fail-closed).
 """
 from __future__ import annotations
 import json
+import threading
+from functools import lru_cache
 from pathlib import Path
 from typing import Optional
 import numpy as np
 
 from .features import signal_features
 
+from ._resources import model_dir as _model_dir  # noqa: E402
+
 ROOT = Path(__file__).resolve().parents[2]
-MODEL_DIR = ROOT / "eval" / "model"
+MODEL_DIR = _model_dir()  # repo eval/model, JMGL_MODEL_DIR, or bundled package data
 NPZ = MODEL_DIR / "clf.npz"
 META = MODEL_DIR / "clf_meta.json"
 
@@ -55,9 +59,19 @@ def is_available() -> bool:
     return True
 
 
+_LOAD_LOCK = threading.Lock()
+
+
 def _load():
     if _STATE["loaded"]:
         return
+    with _LOAD_LOCK:  # servers call this from several threads; load exactly once
+        if _STATE["loaded"]:
+            return
+        _load_unlocked()
+
+
+def _load_unlocked():
     import os
     os.environ.setdefault("HF_HUB_DISABLE_TELEMETRY", "1")
     from fastembed import TextEmbedding
@@ -70,9 +84,17 @@ def _load():
                   meta=meta, loaded=True)
 
 
+@lru_cache(maxsize=2048)
+def _embed_cached(text: str) -> np.ndarray:
+    v = np.asarray(list(_STATE["embedder"].embed([text]))[0], dtype=np.float32)
+    v.setflags(write=False)  # shared via the cache; never mutate
+    return v
+
+
 def _embed(text: str) -> np.ndarray:
+    """Sentence embedding (cached per process, so re-classifying the same text is cheap)."""
     _load()
-    return np.asarray(list(_STATE["embedder"].embed([text]))[0], dtype=np.float32)
+    return _embed_cached(text)
 
 
 def _features(request: str, context: Optional[dict]) -> np.ndarray:

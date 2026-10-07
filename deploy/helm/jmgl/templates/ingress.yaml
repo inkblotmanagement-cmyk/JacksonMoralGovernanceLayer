@@ -1,0 +1,36 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "jmgl.fullname" . }}
+  labels: {{- include "jmgl.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
+  annotations: {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- if .Values.ingress.tls.enabled }}
+  tls:
+    - hosts: [{{ .Values.ingress.host | quote }}]
+      secretName: {{ .Values.ingress.tls.secretName }}
+  {{- end }}
+  rules:
+    - host: {{ .Values.ingress.host | quote }}
+      http:
+        paths:
+          # Only the public API surface; /metrics and /docs stay cluster-internal.
+          - path: /v1
+            pathType: Prefix
+            backend: { service: { name: {{ include "jmgl.fullname" . }}-api, port: { number: 8000 } } }
+          - path: /healthz
+            pathType: Exact
+            backend: { service: { name: {{ include "jmgl.fullname" . }}-api, port: { number: 8000 } } }
+          - path: /readyz
+            pathType: Exact
+            backend: { service: { name: {{ include "jmgl.fullname" . }}-api, port: { number: 8000 } } }
+          {{- if .Values.web.enabled }}
+          - path: /
+            pathType: Prefix
+            backend: { service: { name: {{ include "jmgl.fullname" . }}-web, port: { number: 80 } } }
+          {{- end }}
+{{- end }}

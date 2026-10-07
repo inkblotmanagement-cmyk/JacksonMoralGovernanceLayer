@@ -1,0 +1,10 @@
+# Example override for an EU deployment (data residency: EU audit DB, EU region label).
+api:
+  existingSecret: jmgl-api-eu          # holds an EU PostgreSQL URL in JMGL_AUDIT_DATABASE_URL
+  env:
+    JMGL_REGION: europe-west1
+    JMGL_CORS_ORIGINS: "https://eu.jmgl.example.org"
+    JMGL_AUDIT_RETENTION_DAYS: "30"
+ingress:
+  enabled: true
+  host: eu.jmgl.example.org

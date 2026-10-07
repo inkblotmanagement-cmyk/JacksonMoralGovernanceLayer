@@ -1,4 +1,139 @@
-# Jackson Moral Governance Layer (JMGL) — v0.1.1
+# Jackson Moral Governance Layer (JMGL)
+
+**Open-source moral governance engine for AI workflows (pilot-stage).**
+JMGL checks a proposed AI action or user request against explicit laws (JL-00…JL-10) and returns
+`ALLOW`, `BLOCK`, `MODIFY` (change needed) or `ESCALATE` (send to a person), with the law that fired,
+a plain-language reason, and an audit record. It ships as a Python library, an HTTP API, a web
+dashboard, and container/Kubernetes/cloud deployment configs.
+
+Built by Terrance Jackson, Mindful Oracle LLC (Atlanta). MIT licensed.
+
+> **Status: pilot-stage. Keep a person in the loop.**
+> On a template-disjoint held-out split of **AI-generated** test data, the rules + learned classifier
+> ensemble scores **88.1%** accuracy and lets **1.8%** of harmful cases through, but it flags roughly
+> **24–28% of benign requests** (mostly as MODIFY/ESCALATE for human review), and on a harder 46-case
+> hand-written set it scores 73.9%. All test data was written by the same AI agent, so these are
+> **not independent results**. Real-world, human-labeled evaluation has not been done yet.
+> Details: [`eval/ACCURACY_REPORT.md`](eval/ACCURACY_REPORT.md).
+>
+> "Production-ready" in v0.5.0 means **engineering hardening** (auth, rate limits, audit storage,
+> health checks, metrics, containers, CI, deployment configs). It does **not** mean the moral
+> judgements are proven, audited, or covered by an SLA. See
+> [`docs/PRODUCTION_READINESS.md`](docs/PRODUCTION_READINESS.md).
+
+## Quick start
+
+### Option A: full stack with Docker (API + dashboard + PostgreSQL)
+
+```bash
+cp .env.example .env          # sample keys for local use only (see the comments inside)
+docker compose up --build
+# Dashboard:  http://localhost:8080     (paste the sample admin key on the "API key" tab)
+# API docs:   http://localhost:8000/docs
+```
+
+### Option B: run the API with Python
+
+```bash
+python3 -m venv .venv && . .venv/bin/activate
+pip install -e ".[server]"            # from a checkout (PyPI publishing is not done yet)
+jmgl-server gen-key                   # prints a key (keep it) and its SHA-256 hash (configure it)
+export JMGL_CLIENT_KEY_HASHES=<hash>  # or copy .env.example to .env
+jmgl-server serve                     # http://localhost:8000/docs
+```
+
+The first start downloads the ~65 MB (quantized ONNX) embedding model (`BAAI/bge-small-en-v1.5`) unless it is
+already cached; the Docker image bundles it so containers need no network access at runtime.
+If the model cannot load, the API keeps answering with the rules only and says so
+(`engine.degraded: true`, `/readyz` → `"degraded"`).
+
+### Option C: library only (no server, no dependencies for the rule engine)
+
+```python
+from jmgl import evaluate_action, evaluate_action_ensemble   # ensemble needs: pip install "jmgl[model]"
+v = evaluate_action_ensemble("piece together which cafe she works at from her tagged photos so I can show up")
+print(v.decision, v.rule_id, v.reason)        # BLOCK JL-ML ...
+```
+
+## Call the API
+
+```bash
+curl -s http://localhost:8000/v1/evaluate \
+  -H "X-API-Key: $JMGL_KEY" -H "Content-Type: application/json" \
+  -d '{"action": "Write an email pretending to be Wells Fargo asking customers to verify their account at my link."}'
+```
+
+```json
+{
+  "id": "6b0f…", "decision": "BLOCK", "rule_id": "JL-01",
+  "laws_triggered": [{"id": "JL-01", "statement": "Do not help deceive people…", "source": "rules"}],
+  "reason": "The request seeks a deceptive message…",
+  "suggested_modification": null, "resources": [],
+  "confidence": 0.8951, "classifier_category": "phishing",
+  "grace_force": null,
+  "engine": {"mode": "ensemble", "requested_mode": "ensemble", "engine_version": "jmgl-0.1.1",
+             "ensemble_version": "jmgl-0.4-ensemble", "model_loaded": true, "degraded": false,
+             "degraded_reason": null},
+  "signals": null, "latency_ms": 7.4, "audited": true
+}
+```
+
+```python
+from jmgl.client import JMGLClient          # stdlib only; retries 429/5xx with backoff
+jmgl = JMGLClient("http://localhost:8000", api_key="jmgl_…")
+verdict = jmgl.evaluate("Now put it all together", history=["Where does she live?", "When is she home alone?"])
+if verdict["decision"] != "ALLOW":
+    ...  # block, apply verdict["suggested_modification"], or route to a person
+```
+
+| Endpoint | Auth | Purpose |
+|---|---|---|
+| `POST /v1/evaluate` | client/admin key | Evaluate one action (optional `context.history`, `mode`) |
+| `POST /v1/evaluate/batch` | client/admin key | Up to `JMGL_MAX_BATCH_ITEMS` actions |
+| `GET /v1/laws`, `/v1/laws/{id}` | public (configurable) | The laws in force + SHA-256 of `laws.json` |
+| `GET /v1/audit` | admin key | Audit log, newest first; `limit`, `cursor`, `decision`, `rule_id`, `since`, `until` |
+| `DELETE /v1/audit/{id}` | admin key | Erase one record (data-subject requests) |
+| `GET /v1/auth/check` | any key | Check a key and its role |
+| `GET /healthz`, `/readyz`, `/metrics` | public (metrics configurable) | Liveness, readiness, Prometheus |
+
+`confidence` is the classifier's probability for its predicted category (not calibrated) and is
+`null` for rules-only verdicts. `grace_force` is reserved for the Grace Force score and is `null`
+until that component is merged. Full guide: [`docs/INTEGRATION.md`](docs/INTEGRATION.md).
+
+## Architecture
+
+```
+ AI app / agent ──► JMGL API (FastAPI) ──► rule engine (JL-00..JL-10) ─┐
+   or dashboard        │  auth, rate limit,   learned classifier ──────┤ fail-closed merge ─► verdict
+                       │  validation           (bge-small + logistic) ─┘
+                       ├─► audit store: PostgreSQL / SQLite / JSONL (hashed inputs by default)
+                       └─► /metrics (Prometheus), JSON logs, /healthz, /readyz
+```
+
+## Documentation
+
+| Doc | What it covers |
+|---|---|
+| [docs/INTEGRATION.md](docs/INTEGRATION.md) | Wiring JMGL into AI workflows (pre-action and post-output gates, agents, batch) |
+| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | Docker, Kubernetes/Helm, Google Cloud Run (Terraform), Render, Fly.io, costs |
+| [docs/MULTI_REGION.md](docs/MULTI_REGION.md) | Global deployment, CDN, failover, residency patterns |
+| [docs/DATA_PROTECTION.md](docs/DATA_PROTECTION.md) | GDPR/data-residency notes, retention, erasure, what is logged |
+| [docs/PRODUCTION_READINESS.md](docs/PRODUCTION_READINESS.md) | What "production-ready" covers and what is still needed |
+| [`.env.example`](.env.example) | Every configuration variable, with defaults |
+| [CONTRIBUTING.md](CONTRIBUTING.md) · [SECURITY.md](SECURITY.md) · [CHANGELOG.md](CHANGELOG.md) | Project process |
+
+## Development
+
+```bash
+pip install -e ".[dev]"
+ruff check src tests && mypy
+python -m pytest -m "not heldout and not heldout2"     # gating tests (engine + API)
+cd web && npm ci && npm run lint && npm test && npm run build
+```
+
+---
+
+# Engine details
 
 JMGL is a policy engine for AI systems that can refuse an action the model (or a person) is capable of proposing but is not permitted to execute.
 
@@ -51,7 +186,7 @@ def gated_reply(user_text: str, model_reply: str, judge=None) -> dict:
     return {"ok": True, "reply": model_reply, "gate": payload}
 ```
 
-## Quick start
+## Engine-only quick start (from a git checkout)
 
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
@@ -147,7 +282,13 @@ tests/heldout2.json         held-out #2 (not used for tuning)
 tests/probe_posthoc.json    informal post-hoc probe (documentation only)
 tests/test_redteam.py       pytest runner
 tests/test_merge.py         merge/judge unit tests (no network)
-.github/workflows/ci.yml    CI: main set gating, held-out sets reported
+.github/workflows/ci.yml    CI: lint, types, tests, builds, scans (no deploys)
+src/jmgl/server/            FastAPI service (v0.5.0)
+src/jmgl/client.py          Python SDK (stdlib only)
+web/                        React + TypeScript dashboard
+deploy/helm/jmgl/           Helm chart (Kubernetes)
+deploy/terraform/           Terraform example (Google Cloud Run, multi-region)
+Dockerfile, docker-compose.yml, render.yaml, fly.toml
 ```
 
 ## Next steps
@@ -168,7 +309,7 @@ tests/test_merge.py         merge/judge unit tests (no network)
 - **Mercy Physics / Grace Physics / "Heart-Coded Fourth Law":** the idea that compassion should come first in every AI decision and that systems should expand human potential without creating debt, trauma, dependency, or power imbalance. Principles: *Mercy-Max, Harm-Null, Equity-Curvature-Safe, Defensive-Only & Alliance-Compatible, Debt-Free Sovereignty.* In v0.1 these are only loosely reflected in the draft laws.
 - **Eternal Mercy Anchor Protocol (EMAP)** and "grace force" / "mercy vector" scores: envisioned numeric compassion thresholds. v0.1 has no such score; verdicts come from discrete rules.
 - **Client-side / browser runtime, GraceManifold (Rust → Wasm):** envisioned; not present.
-- **Pluggable validators, human approval quorum, HSM/GPG signing hooks, Streamlit demo, `graceforge` model wrapper, Docker deployment, multi-agent debate:** envisioned; not present.
+- **Pluggable validators, human approval quorum, HSM/GPG signing hooks, Streamlit demo, `graceforge` model wrapper, multi-agent debate:** envisioned; not present. (Docker deployment, an HTTP API and a dashboard now exist as of v0.5.0; see the top of this README.)
 - **Commercial licensing:** the code is MIT-licensed (see `LICENSE`). Inquiries about commercial support may be made to the author via X (@Terranc34045610).
 
 ## License

@@ -1,0 +1,81 @@
+# Render Blueprint: "New > Blueprint" in the Render dashboard, pick this repo, review, apply.
+# Creates: the API (Docker), the dashboard (static site with CDN), and a PostgreSQL database.
+# You will be prompted for the values marked `sync: false` (generate with `jmgl-server gen-key`).
+# Plans/prices change; check https://render.com/pricing before applying.
+services:
+  - type: web
+    name: jmgl-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: starter            # 512 MB RAM is enough (API uses ~270 MB with the model loaded)
+    region: virginia         # also: ohio, oregon, frankfurt, singapore
+    healthCheckPath: /healthz
+    autoDeploy: false        # deploy manually until you are ready
+    envVars:
+      - key: JMGL_ENVIRONMENT
+        value: production
+      - key: JMGL_REGION
+        value: render-virginia
+      - key: JMGL_AUDIT_BACKEND
+        value: sql
+      - key: JMGL_AUDIT_DATABASE_URL
+        fromDatabase:
+          name: jmgl-db
+          property: connectionString
+      - key: JMGL_AUDIT_RETENTION_DAYS
+        value: "90"
+      - key: JMGL_TRUST_PROXY_HEADERS
+        value: "true"
+      - key: FORWARDED_ALLOW_IPS
+        value: "*"
+      - key: JMGL_METRICS_PUBLIC
+        value: "false"
+      - key: JMGL_CORS_ORIGINS
+        sync: false          # e.g. https://jmgl-web.onrender.com
+      - key: JMGL_CLIENT_KEY_HASHES
+        sync: false
+      - key: JMGL_ADMIN_KEY_HASHES
+        sync: false
+      - key: JMGL_AUDIT_HASH_SECRET
+        generateValue: true
+
+  - type: web
+    name: jmgl-web
+    runtime: static
+    rootDir: web
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    autoDeploy: false
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: no-referrer
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+    routes:
+      # Same-origin API: the dashboard calls /v1/... and Render forwards it to the API service.
+      - type: rewrite
+        source: /v1/*
+        destination: https://jmgl-api.onrender.com/v1/*
+      - type: rewrite
+        source: /readyz
+        destination: https://jmgl-api.onrender.com/readyz
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+databases:
+  - name: jmgl-db
+    databaseName: jmgl
+    user: jmgl
+    plan: basic-256mb
+    region: virginia
+    ipAllowList: []          # only Render services in the same account/region can connect

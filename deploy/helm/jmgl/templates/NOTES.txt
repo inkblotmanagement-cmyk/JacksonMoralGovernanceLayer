@@ -1,0 +1,15 @@
+JMGL {{ .Chart.AppVersion }} installed (pilot-stage software: keep a person reviewing ESCALATE/MODIFY verdicts).
+
+API service:  {{ include "jmgl.fullname" . }}-api:8000   (probes: /healthz, /readyz; metrics: /metrics)
+{{- if .Values.web.enabled }}
+Dashboard:    {{ include "jmgl.fullname" . }}-web:80
+{{- end }}
+{{- if not (or .Values.api.existingSecret .Values.api.secret.create) }}
+
+WARNING: no Secret configured. The API will refuse to start in production without
+JMGL_CLIENT_KEY_HASHES / JMGL_ADMIN_KEY_HASHES. Set api.existingSecret (recommended).
+{{- end }}
+
+Quick check:
+  kubectl port-forward svc/{{ include "jmgl.fullname" . }}-api 8000:8000
+  curl -s localhost:8000/readyz

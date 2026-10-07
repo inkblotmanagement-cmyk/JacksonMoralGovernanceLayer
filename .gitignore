@@ -11,3 +11,21 @@ eval/hybrid_runs/*.log
 eval/splits/*.jsonl
 eval/model/emb_cache/
 eval/accuracy_runs/
+
+# production-ready additions
+.env
+data/
+*.db
+web/node_modules/
+web/dist/
+.mypy_cache/
+.ruff_cache/
+dist/
+build/
+*.egg-info/
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+*.tfvars
+!*.tfvars.example

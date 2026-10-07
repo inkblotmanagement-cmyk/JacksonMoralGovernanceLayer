@@ -1,0 +1,108 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "jmgl"
+dynamic = ["version"]
+description = "Jackson Moral Governance Layer: an open-source policy engine that checks AI actions against explicit laws (pilot-stage)."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Terrance Jackson, Mindful Oracle LLC" }]
+requires-python = ">=3.10"
+keywords = ["ai-governance", "ai-safety", "policy-engine", "guardrails", "audit"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Security",
+  "Framework :: FastAPI",
+]
+# The rule engine itself has no third-party dependencies.
+dependencies = []
+
+[project.optional-dependencies]
+# rules + learned classifier (v0.4 ensemble); the embedding model downloads on first use
+model = ["numpy>=1.26", "fastembed>=0.4"]
+# HTTP API
+server = [
+  "jmgl[model]",
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.30",
+  "pydantic>=2.7",
+  "pydantic-settings>=2.3",
+  "sqlalchemy>=2.0",
+  "prometheus-client>=0.20",
+]
+postgres = ["psycopg[binary]>=3.1"]
+redis = ["redis>=5.0"]
+all = ["jmgl[server,postgres,redis]"]
+dev = [
+  "jmgl[all]",
+  "pytest>=8",
+  "httpx>=0.27",
+  "fakeredis>=2.23",
+  "ruff>=0.6",
+  "mypy>=1.10",
+  "pip-audit>=2.7",
+  "build>=1.2",
+]
+
+[project.scripts]
+jmgl = "jmgl.__main__:main"
+jmgl-server = "jmgl.server.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/inkblotmanagement-cmyk/JacksonMoralGovernanceLayer"
+Source = "https://github.com/inkblotmanagement-cmyk/JacksonMoralGovernanceLayer"
+Issues = "https://github.com/inkblotmanagement-cmyk/JacksonMoralGovernanceLayer/issues"
+Changelog = "https://github.com/inkblotmanagement-cmyk/JacksonMoralGovernanceLayer/blob/main/CHANGELOG.md"
+
+[tool.hatch.version]
+path = "src/jmgl/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/jmgl"]
+
+# Bundle the laws, judge schema and classifier weights so an installed wheel works
+# outside a git checkout (see src/jmgl/_resources.py).
+[tool.hatch.build.targets.wheel.force-include]
+"spec/laws.json" = "jmgl/data/laws.json"
+"spec/judge_schema.json" = "jmgl/data/judge_schema.json"
+"eval/model/clf.npz" = "jmgl/data/model/clf.npz"
+"eval/model/clf_meta.json" = "jmgl/data/model/clf_meta.json"
+
+[tool.hatch.build.targets.sdist]
+include = ["src/", "spec/", "eval/model/clf.npz", "eval/model/clf_meta.json", "tests/", "README.md",
+           "LICENSE", "CHANGELOG.md", "pytest.ini"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+extend-exclude = ["eval", "backup", "web", "deploy"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B", "S", "UP", "I"]
+ignore = ["UP007", "UP045", "UP006", "UP035", "B008", "S101", "E501", "I001"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S", "B"]
+"src/jmgl/signals.py" = ["E", "W"]
+# pre-existing engine modules: keep their diffs minimal (other branches edit them)
+"src/jmgl/judge.py" = ["S310", "F401"]
+"src/jmgl/__main__.py" = ["E741"]
+"src/jmgl/ensemble.py" = ["UP031"]
+"src/jmgl/classifier.py" = ["B905"]
+"tests/test_merge.py" = ["E741"]
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+warn_unused_ignores = false
+files = ["src/jmgl/server", "src/jmgl/client.py", "src/jmgl/_resources.py"]

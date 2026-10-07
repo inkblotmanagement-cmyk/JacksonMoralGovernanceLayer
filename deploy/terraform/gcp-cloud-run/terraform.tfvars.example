@@ -1,0 +1,8 @@
+project_id     = "your-gcp-project"
+regions        = ["us-east1", "europe-west1"]
+primary_region = "us-east1"
+api_image      = "us-east1-docker.pkg.dev/your-gcp-project/jmgl/jmgl-api:0.5.0"
+domain         = "jmgl.example.org"
+cors_origins   = ""
+min_instances  = 0
+max_instances  = 10
