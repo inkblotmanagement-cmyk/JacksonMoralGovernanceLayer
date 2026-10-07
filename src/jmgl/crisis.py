@@ -23,7 +23,7 @@ FLAGS = re.IGNORECASE
 WISH_NOT_EXIST = [
     r"\b(?:don'?t|do not|does not|doesn'?t|no longer) (?:want|wanna|wants) to (?:exist|be alive|live|be here|wake up|be around)\b",
     r"\bwish(?:ing|ed)? (?:i|that i) (?:was|were|had|could) (?:be )?(?:dead|gone|never been born|not born|disappear\w*|vanish\w*)\b",
-    r"\b(?:hope|wish|pray) (?:i|that i) (?:don'?t|won'?t|never|do not) wake up\b",
+    r"\b(?:hope|wish|pray) (?:i|that i) (?:just |really |simply |honestly |somehow |could )*(?:don'?t|won'?t|never|do not|dont) wake up\b",
     r"\b(?:not|never) (?:to )?wake up (?:again|tomorrow|in the morning)?\b",
     r"\bwant(?:s|ed)? to (?:die|be dead|stop existing|cease to exist|not exist)\b",
     r"\btired of (?:existing|living|being alive|life|being here)\b",
