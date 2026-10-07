@@ -25,12 +25,13 @@ independent measurement of real benefit. See eval/GRACE_FORCE_REPORT.md.
 """
 from __future__ import annotations
 
+import contextlib
 import json
 import re
 from pathlib import Path
 from typing import Optional
 
-from .engine import evaluate_action, Verdict, CRISIS_RESOURCES
+from .engine import Verdict, CRISIS_RESOURCES
 from . import classifier as C
 
 
@@ -117,7 +118,7 @@ def _clf_signals(request: str, context: Optional[dict], rule_v: Verdict) -> dict
     Uses the learned classifier when available; otherwise derives conservative
     proxies from the deterministic rule verdict (fail-closed)."""
     if C.is_available():
-        try:
+        with contextlib.suppress(Exception):  # classifier error -> conservative rule fallback (fail-closed)
             cl = C.classify(request, context)
             probs = cl.get("probs") or {}
             p_harm = sum(v for k, v in probs.items() if k in HARM_CATEGORIES)
@@ -125,8 +126,6 @@ def _clf_signals(request: str, context: Optional[dict], rule_v: Verdict) -> dict
                 p_harm = 0.85 if cl["decision"] in ("BLOCK", "MODIFY") else 0.15
             return {"p_harm": min(1.0, p_harm), "confidence": float(cl.get("prob", 0.6)),
                     "category": cl.get("category", "?"), "source": "classifier"}
-        except Exception:
-            pass
     # rule-only fallback
     if rule_v.decision in ("BLOCK",):
         return {"p_harm": 0.9, "confidence": 0.8, "category": "rule", "source": "rule"}

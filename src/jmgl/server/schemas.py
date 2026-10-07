@@ -53,7 +53,7 @@ class EngineInfo(BaseModel):
 
 class GraceForce(BaseModel):
     """Grace Force score (0..1). Populated from Verdict.grace_force / Verdict.grace when the
-    Grace Force component is present in the engine; null in this release."""
+    engine computes it (ensemble/grace path); null in rules-only mode."""
     score: float = Field(ge=0, le=1)
     threshold: Optional[float] = Field(default=None, ge=0, le=1)
     passed: Optional[bool] = None
@@ -73,7 +73,7 @@ class EvaluateResponse(BaseModel):
         default=None, ge=0, le=1,
         description="Classifier probability for its predicted category (not calibrated); null in rules-only mode")
     classifier_category: Optional[str] = None
-    grace_force: Optional[GraceForce] = Field(default=None, description="Reserved for Grace Force; null for now")
+    grace_force: Optional[GraceForce] = Field(default=None, description="Grace Force score; null in rules-only mode")
     engine: EngineInfo
     signals: Optional[dict] = None
     latency_ms: float

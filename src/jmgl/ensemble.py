@@ -19,6 +19,7 @@ If the classifier is unavailable (missing model files or fastembed), it falls
 back to the rule engine alone, so the layer never crashes (fail-closed).
 """
 from __future__ import annotations
+import contextlib
 from typing import Optional
 
 from .engine import evaluate_action, Verdict, CRISIS_RESOURCES
@@ -42,13 +43,11 @@ def _is_harm(dec: str) -> bool:
 def evaluate_action_ensemble(request: str, context: Optional[dict] = None, *, with_grace: bool = True, **kw) -> Verdict:
     v = _ensemble_decision(request, context, **kw)
     if with_grace:
-        try:
+        with contextlib.suppress(Exception):  # grace scoring is best-effort; never break a verdict
             from . import grace as _grace
             sc = _grace.score_components(request, context, v)
             v.grace_force = sc["grace_force"]
             v.grace = {**sc, "threshold": _grace.load_config()["threshold_pass"], "version": _grace.GRACE_VERSION}
-        except Exception:
-            pass
     return v
 
 

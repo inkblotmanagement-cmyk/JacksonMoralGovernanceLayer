@@ -8,12 +8,14 @@
 These run WITHOUT the embedding model (CI): the overrides and crisis cues are pure
 regex, and classifier-dependent paths are monkeypatched.
 """
-import json, sys
+import json
+import sys
+
+import pytest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 import jmgl.classifier as C
 from jmgl import crisis as CR
-from jmgl import grace as G
 from jmgl.grace import evaluate_grace_force, _hard_harm_override
 from jmgl.ensemble import evaluate_action_ensemble
 
@@ -97,8 +99,6 @@ def test_rescue_refuses_when_override_present(monkeypatch):
 def _load(fn):
     d = json.loads((ROOT / fn).read_text())
     return d["cases"] if isinstance(d, dict) else d
-
-import pytest
 
 @pytest.mark.skipif(not C.is_available(), reason="needs the embedding model (defense-in-depth guarantee is rules+classifier+overrides)")
 def test_redteam_never_laundered_full_system():

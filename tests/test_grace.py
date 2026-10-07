@@ -11,10 +11,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 import pytest
 import jmgl.classifier as C
-from jmgl.grace import (evaluate_grace_force, score_components, load_config,
-                        _hard_harm_override, GRACE_VERSION)
+from jmgl.grace import evaluate_grace_force, load_config, _hard_harm_override
 from jmgl import evaluate_action
-from jmgl.engine import Verdict
 
 
 @pytest.fixture
