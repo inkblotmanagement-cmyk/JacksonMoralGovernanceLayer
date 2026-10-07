@@ -25,10 +25,11 @@ from . import signals as S
 from . import crisis as CR
 from . import locate as LOC
 from .audit import write_audit
+from ._resources import laws_path as _laws_path
 
 ENGINE_VERSION = "jmgl-0.1.1"
 REPO_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_LAWS = REPO_ROOT / "spec" / "laws.json"
+DEFAULT_LAWS = _laws_path()  # repo spec/laws.json, JMGL_LAWS_PATH, or bundled package data
 
 CRISIS_RESOURCES = [
     "US: call or text 988 (988 Suicide & Crisis Lifeline), or chat at 988lifeline.org",

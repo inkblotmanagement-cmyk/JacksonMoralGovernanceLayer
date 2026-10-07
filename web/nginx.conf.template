@@ -1,0 +1,61 @@
+# Rendered by the nginx image entrypoint (envsubst on JMGL_* variables only).
+# Note: nginx does not inherit add_header into a location that sets its own headers, so the
+# security headers are repeated in every location that adds headers.
+server {
+    listen 8080;
+    server_name _;
+    root /usr/share/nginx/html;
+    index index.html;
+    server_tokens off;
+    client_max_body_size 256k;
+
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "no-referrer" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+    add_header Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' ${JMGL_PUBLIC_API_BASE_URL}; frame-ancestors 'none'; base-uri 'none'; form-action 'self'" always;
+
+    location = /nginx-health { access_log off; default_type text/plain; return 200 "ok\n"; }
+
+    # Runtime config for the SPA (no rebuild needed to point at another API).
+    location = /config.js {
+        default_type application/javascript;
+        add_header Cache-Control "no-store" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        return 200 'window.__JMGL_CONFIG__ = { apiBaseUrl: "${JMGL_PUBLIC_API_BASE_URL}" };\n';
+    }
+
+    # Same-origin API proxy (used when JMGL_PUBLIC_API_BASE_URL is empty).
+    location /v1/ {
+        proxy_pass ${JMGL_API_UPSTREAM};
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Request-ID $request_id;
+        proxy_read_timeout 60s;
+    }
+    location = /healthz { proxy_pass ${JMGL_API_UPSTREAM}; }
+    location = /readyz  { proxy_pass ${JMGL_API_UPSTREAM}; }
+    # Operational endpoints are deliberately NOT exposed on the public site.
+    location ~ ^/(metrics|docs|redoc|openapi\.json)$ { return 404; }
+
+    location /assets/ {
+        expires 1y;
+        add_header Cache-Control "public, immutable" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header Referrer-Policy "no-referrer" always;
+        add_header X-Frame-Options "DENY" always;
+        add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+        add_header Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' ${JMGL_PUBLIC_API_BASE_URL}; frame-ancestors 'none'; base-uri 'none'; form-action 'self'" always;
+        try_files $uri =404;
+    }
+    location / {
+        add_header Cache-Control "no-cache" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header Referrer-Policy "no-referrer" always;
+        add_header X-Frame-Options "DENY" always;
+        add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+        add_header Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' ${JMGL_PUBLIC_API_BASE_URL}; frame-ancestors 'none'; base-uri 'none'; form-action 'self'" always;
+        try_files $uri $uri/ /index.html;
+    }
+}

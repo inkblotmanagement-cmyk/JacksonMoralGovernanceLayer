@@ -21,7 +21,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Optional
 
-SCHEMA_PATH = Path(__file__).resolve().parents[2] / "spec" / "judge_schema.json"
+from ._resources import judge_schema_path as _judge_schema_path  # noqa: E402
+
+SCHEMA_PATH = _judge_schema_path()  # repo spec/, JMGL_JUDGE_SCHEMA_PATH, or bundled package data
 JUDGE_SCHEMA: dict = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
 
 DECISIONS = tuple(JUDGE_SCHEMA["properties"]["decision"]["enum"])

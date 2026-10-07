@@ -1,0 +1,71 @@
+# Local full stack: API + dashboard + PostgreSQL.
+#   cp .env.example .env      # then (optionally) replace the sample key hashes
+#   docker compose up --build
+#   open http://localhost:8080   (dashboard)   http://localhost:8000/docs   (API docs)
+name: jmgl
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: jmgl
+      POSTGRES_USER: jmgl
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-jmgl_local_only}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jmgl -d jmgl"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: jmgl-api:local
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      JMGL_ENVIRONMENT: ${JMGL_ENVIRONMENT:-development}
+      JMGL_AUDIT_BACKEND: sql
+      JMGL_AUDIT_DATABASE_URL: postgresql+psycopg://jmgl:${POSTGRES_PASSWORD:-jmgl_local_only}@postgres:5432/jmgl
+      JMGL_CORS_ORIGINS: http://localhost:8080,http://localhost:5173
+      JMGL_TRUST_PROXY_HEADERS: "true"
+      FORWARDED_ALLOW_IPS: "*"
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /app/data:uid=10001,gid=10001
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: [ALL]
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ./web
+    image: jmgl-web:local
+    environment:
+      JMGL_API_UPSTREAM: http://api:8000
+    ports:
+      - "8080:8080"
+    depends_on:
+      api:
+        condition: service_healthy
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: [ALL]
+    restart: unless-stopped
+
+volumes:
+  pgdata:

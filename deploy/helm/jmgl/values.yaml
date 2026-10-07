@@ -1,0 +1,96 @@
+# Default values for the JMGL chart. Override per environment/region with -f values-<region>.yaml.
+
+nameOverride: ""
+fullnameOverride: ""
+
+imagePullSecrets: []
+
+api:
+  image:
+    repository: ghcr.io/inkblotmanagement-cmyk/jmgl-api   # push your built image here (not published yet)
+    tag: ""                # defaults to .Chart.AppVersion
+    pullPolicy: IfNotPresent
+  replicaCount: 2
+  port: 8000
+  # Non-secret settings (JMGL_* environment variables). See .env.example for all options.
+  env:
+    JMGL_ENVIRONMENT: production
+    JMGL_REGION: us-east1
+    JMGL_MODE: ensemble
+    JMGL_REQUIRE_MODEL: "false"
+    JMGL_AUDIT_BACKEND: sql
+    JMGL_AUDIT_RETENTION_DAYS: "90"
+    JMGL_AUDIT_LOG_RAW: "false"
+    JMGL_CORS_ORIGINS: "https://jmgl.example.org"
+    JMGL_TRUST_PROXY_HEADERS: "true"
+    JMGL_METRICS_PUBLIC: "true"   # /metrics is not routed by the ingress below
+    JMGL_RATE_LIMIT_PER_MINUTE: "120"
+    FORWARDED_ALLOW_IPS: "*"
+  # Secret settings. Either let the chart create a Secret from `secret.values` (convenient, but the
+  # values end up in your Helm release), or point `existingSecret` at one you manage
+  # (External Secrets Operator, Sealed Secrets, cloud secret manager CSI driver...).
+  # Expected keys: JMGL_CLIENT_KEY_HASHES, JMGL_ADMIN_KEY_HASHES, JMGL_AUDIT_DATABASE_URL,
+  # JMGL_AUDIT_HASH_SECRET, optionally JMGL_RATE_LIMIT_REDIS_URL.
+  existingSecret: ""
+  secret:
+    create: false
+    values: {}
+  resources:
+    requests: { cpu: 250m, memory: 512Mi }
+    limits: { cpu: "1", memory: 1Gi }
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 70
+  pdb:
+    enabled: true
+    minAvailable: 1
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8000"
+    prometheus.io/path: /metrics
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  topologySpreadConstraints: true
+
+web:
+  enabled: true
+  image:
+    repository: ghcr.io/inkblotmanagement-cmyk/jmgl-web
+    tag: ""
+    pullPolicy: IfNotPresent
+  replicaCount: 2
+  port: 8080
+  publicApiBaseUrl: ""   # "" = same origin (ingress routes /v1 to the API)
+  resources:
+    requests: { cpu: 50m, memory: 64Mi }
+    limits: { cpu: 250m, memory: 128Mi }
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 6
+    targetCPUUtilizationPercentage: 70
+
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}   # e.g. GKE Workload Identity / EKS IRSA for secret access
+
+ingress:
+  enabled: false
+  className: nginx
+  annotations: {}
+    # cert-manager.io/cluster-issuer: letsencrypt
+  host: jmgl.example.org
+  tls:
+    enabled: true
+    secretName: jmgl-tls
+
+networkPolicy:
+  enabled: true
+
+serviceMonitor:
+  enabled: false    # requires the Prometheus Operator CRDs
+  interval: 30s

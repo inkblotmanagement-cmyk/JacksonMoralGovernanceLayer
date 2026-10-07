@@ -1,0 +1,11 @@
+apiVersion: v2
+name: jmgl
+description: Jackson Moral Governance Layer (API + dashboard). Pilot-stage policy engine for AI workflows.
+type: application
+version: 0.5.0
+appVersion: "0.5.0"
+license: MIT
+home: https://github.com/inkblotmanagement-cmyk/JacksonMoralGovernanceLayer
+maintainers:
+  - name: Mindful Oracle LLC
+keywords: [ai-governance, policy-engine, guardrails]
