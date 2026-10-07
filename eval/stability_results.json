@@ -1,0 +1,11 @@
+{
+ "sample": 300,
+ "edits_per_item": 3,
+ "determinism_nonreproducible": 0,
+ "determinism_ok": true,
+ "mean_gate_std_within_item": 0.0102,
+ "max_gate_std_within_item": 0.3266,
+ "variants_total": 900,
+ "decision_flips": 10,
+ "decision_flip_rate": 0.0111
+}

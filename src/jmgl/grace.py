@@ -42,6 +42,11 @@ def _base_verdict(request, context):
     return _ensemble_decision(request, context)
 
 GRACE_VERSION = "grace-force-0.7.1"
+
+# Optional instrumentation: if set to a list, every case that ENTERS the rewrite
+# path appends a record (original/rewritten text + scores + final decision). The
+# eval harness turns this on; production leaves it None (no overhead).
+REWRITE_LOG: Optional[list] = None
 _CONFIG_PATH = Path(__file__).resolve().parents[2] / "spec" / "grace_force.json"
 _CONFIG: Optional[dict] = None
 
@@ -173,10 +178,25 @@ def score_components(request: str, context: Optional[dict], rule_v: Verdict,
     gf = (w["human_benefit"] * human_benefit + w["harm_avoided"] * harm_avoided +
           w["long_term_flourishing"] * long_term + w["confidence"] * confidence)
     gf = max(0.0, min(1.0, gf))
+
+    # DECISION GATE: the ALLOW/BLOCK/ESCALATE outcome at the pass line depends ONLY
+    # on harm signals + confidence (+ hard-law blocks / overrides handled by the
+    # caller). human_benefit and long_term_flourishing are reported as SECONDARY
+    # labels and are deliberately excluded here, so a claimed benefit can never
+    # move a safety decision (Morality First).
+    di = cfg.get("decision_inputs", ["harm_avoided", "confidence"])
+    comp_vals = {"harm_avoided": harm_avoided, "confidence": confidence,
+                 "human_benefit": human_benefit, "long_term_flourishing": long_term}
+    wsum = sum(w[k] for k in di) or 1.0
+    gate = sum(w[k] * comp_vals[k] for k in di) / wsum
+    gate = max(0.0, min(1.0, gate))
     return {
-        "grace_force": round(gf, 4),
+        "grace_force": round(gf, 4),            # full composite, REPORTED (does not gate)
+        "gate_score": round(gate, 4),           # harm+confidence only, DRIVES the decision
+        "decision_inputs": list(di),
         "components": {"human_benefit": round(human_benefit, 4), "harm_avoided": round(harm_avoided, 4),
                        "long_term_flourishing": round(long_term, 4), "confidence": round(confidence, 4)},
+        "secondary_labels": ["human_benefit", "long_term_flourishing"],
         "p_harm": round(p_harm, 4), "category": cat, "score_source": cs["source"],
         "hard_block": hard_block,
     }
@@ -228,7 +248,7 @@ def _passes(text: str, context: Optional[dict], cfg: dict):
     rv = _base_verdict(text, context)
     sc = score_components(text, context, rv, cfg)
     ok = (rv.decision != "BLOCK" and rv.decision != "ESCALATE"
-          and sc["grace_force"] >= cfg["threshold_pass"]
+          and sc["gate_score"] >= cfg["threshold_pass"]
           and sc["p_harm"] < cfg["rewrite"]["p_harm_eligibility_cap"]
           and not _COVERT.search(text) and not _IMPERSONATE.search(text))
     return ok, rv, sc
@@ -247,6 +267,7 @@ def evaluate_grace_force(request: str, context: Optional[dict] = None, *,
     gf = sc["grace_force"]
     grace_meta = {**sc, "threshold": cfg["threshold_pass"], "version": GRACE_VERSION,
                   "original_grace_force": sc["grace_force"],
+                  "original_gate_score": sc["gate_score"],
                   "rewritten": False, "rewrite_iterations": 0, "rewrite_name": None}
 
     def finalize(v: Verdict) -> Verdict:
@@ -276,20 +297,41 @@ def evaluate_grace_force(request: str, context: Optional[dict] = None, *,
         return finalize(Verdict("ESCALATE", "GF-HARMCUE",
                                 f"Grace Force {gf:.2f}; a clear harm cue is present ({_ovr}), so this is routed to a person rather than passed or reworded."))
 
-    # 4) pass
-    if gf >= cfg["threshold_pass"]:
+    # 4) pass -- decided ONLY by the harm+confidence gate, never by benefit/flourishing
+    gate = sc["gate_score"]
+    if gate >= cfg["threshold_pass"]:
         return finalize(Verdict("ALLOW", "GF-PASS",
-                                f"Grace Force {gf:.2f} is at or above the {cfg['threshold_pass']} pass line."))
+                                f"Safety gate {gate:.2f} (harm+confidence) is at or above the {cfg['threshold_pass']} line; Grace Force {gf:.2f} reported."))
     # 5) rewrite path (hard BLOCK already handled above and is never rewritten)
     candidates = _candidate_texts(request, rule_v, sc["p_harm"], context, cfg)
+    # TRANSFORMATIVE rewrites genuinely change the action (e.g. fair hiring);
+    # ADDITIVE ones only append a safeguard caveat (merely rephrased).
+    _TRANSFORMATIVE = {"fair_criteria"}
+    rec = {"request": request, "category": None, "original_gate_score": sc["gate_score"],
+           "original_grace_force": sc["grace_force"], "original_p_harm": sc["p_harm"],
+           "entered_rewrite": True, "rewritten": False, "rewrite_name": None,
+           "rewrite_kind": None, "rewritten_text": None, "new_gate_score": None,
+           "new_grace_force": None, "final_decision": None}
+    result = None
     for i, (name, cand) in enumerate(candidates[: cfg["rewrite"]["max_iters"]], start=1):
         ok, rv2, sc2 = _passes(cand, context, cfg)
         if ok:
-            grace_meta.update(grace_force=sc2["grace_force"], components=sc2["components"],
-                              p_harm=sc2["p_harm"], rewritten=True, rewrite_iterations=i, rewrite_name=name)
-            return finalize(Verdict("MODIFY", "GF-REWRITE",
-                                    f"Original Grace Force {gf:.2f} was below the line; a safer rewrite scores {sc2['grace_force']:.2f} and passes the laws.",
-                                    suggested_modification=cand))
+            grace_meta.update(grace_force=sc2["grace_force"], gate_score=sc2["gate_score"],
+                              components=sc2["components"], p_harm=sc2["p_harm"],
+                              rewritten=True, rewrite_iterations=i, rewrite_name=name)
+            rec.update(rewritten=True, rewrite_name=name,
+                       rewrite_kind=("transformative" if name in _TRANSFORMATIVE else "additive"),
+                       rewritten_text=cand, new_gate_score=sc2["gate_score"],
+                       new_grace_force=sc2["grace_force"], final_decision="MODIFY")
+            result = finalize(Verdict("MODIFY", "GF-REWRITE",
+                                      f"Original safety gate {gate:.2f} was below the line; a safer rewrite reaches {sc2['gate_score']:.2f} and passes the laws.",
+                                      suggested_modification=cand))
+            break
     # 6) no safe rewrite -> escalate
-    return finalize(Verdict("ESCALATE", "GF-ESCALATE",
-                            f"Grace Force {gf:.2f} is below the {cfg['threshold_pass']} line and no safe rewrite reached it; sending to a person."))
+    if result is None:
+        rec.update(final_decision="ESCALATE")
+        result = finalize(Verdict("ESCALATE", "GF-ESCALATE",
+                                  f"Safety gate {gate:.2f} is below the {cfg['threshold_pass']} line and no safe rewrite reached it; sending to a person."))
+    if REWRITE_LOG is not None:
+        REWRITE_LOG.append(rec)
+    return result

@@ -31,6 +31,10 @@ SELFHARM_PROB = 0.40
 # Confident-benign rescue: minimum classifier probability on a benign_* category
 # required to overturn a rule-stage false positive (calibrated on the DEV split).
 BENIGN_RESCUE_PROB = 0.90
+# A mitigation cue (educational/fairness/own/consent/fiction) may overturn a harm
+# vote ONLY when that harm signal is weak; a highly confident harm classifier is
+# trusted over claimed mitigation (blocks "with consent I'll get later ..." laundering).
+BENIGN_LOOKALIKE_MAXPROB = 0.97
 _MIT = ("mit_fair", "mit_defensive", "mit_own", "mit_consent", "mit_fiction")
 _HARMCUE = ("harm_covert", "harm_impersonate")
 _FIDX = {n: i for i, n in enumerate(FEATURE_NAMES)}
@@ -73,8 +77,8 @@ def _ensemble_decision(request: str, context: Optional[dict] = None, **kw) -> Ve
 
     rh, kh = _is_harm(rule_v.decision), _is_harm(clf_dec)
 
-    # 2) benign look-alike rescue
-    if kh and not rh and mit and not harmcue:
+    # 2) benign look-alike rescue (only for a WEAK harm signal)
+    if kh and not rh and mit and not harmcue and cl["prob"] < BENIGN_LOOKALIKE_MAXPROB:
         return Verdict("ALLOW", "JL-00",
                        "No prohibited intent detected; mitigating framing (educational, fairness, own-account, consent, or fiction) outweighs a weak harm signal.",
                        signals={"classifier_category": cl["category"], "classifier_prob": round(cl["prob"], 3)})
