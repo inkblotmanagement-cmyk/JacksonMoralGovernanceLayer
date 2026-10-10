@@ -75,6 +75,7 @@ packages = ["src/jmgl"]
 [tool.hatch.build.targets.wheel.force-include]
 "spec/laws.json" = "jmgl/data/laws.json"
 "spec/judge_schema.json" = "jmgl/data/judge_schema.json"
+"spec/grace_force.json" = "jmgl/data/grace_force.json"
 "eval/model/clf.npz" = "jmgl/data/model/clf.npz"
 "eval/model/clf_meta.json" = "jmgl/data/model/clf_meta.json"
 

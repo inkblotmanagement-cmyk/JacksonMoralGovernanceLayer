@@ -7,7 +7,7 @@
    "harm_miss_rate": 0.6827195467422096,
    "benign_n": 8308,
    "benign_fp_rate": 0.13529128550794414,
-   "latency_ms_per_case": 0.46871581976798776,
+   "latency_ms_per_case": 0.5279682478595378,
    "confusion_primary": {
     "BLOCK": {
      "ALLOW": 8754,
@@ -25,22 +25,22 @@
    }
   },
   "ensemble": {
-   "accuracy": 0.880904152472148,
+   "accuracy": 0.9593039314980204,
    "harm_n": 13414,
-   "harm_miss_rate": 0.01774265692560012,
+   "harm_miss_rate": 0.017220814074847175,
    "benign_n": 8308,
-   "benign_fp_rate": 0.2827395281656235,
-   "latency_ms_per_case": 5.887577792146092,
+   "benign_fp_rate": 0.05464612421762157,
+   "latency_ms_per_case": 7.561485250114886,
    "confusion_primary": {
     "BLOCK": {
-     "BLOCK": 10349,
-     "MODIFY": 1478,
-     "ALLOW": 238
+     "BLOCK": 10306,
+     "MODIFY": 1329,
+     "ALLOW": 231,
+     "ESCALATE": 199
     },
     "ALLOW": {
-     "BLOCK": 2280,
-     "ALLOW": 5959,
-     "ESCALATE": 69
+     "BLOCK": 454,
+     "ALLOW": 7854
     },
     "ESCALATE": {
      "ESCALATE": 1349
@@ -56,7 +56,7 @@
    "harm_miss_rate": 0.6521067725568056,
    "benign_n": 7265,
    "benign_fp_rate": 0.14549208534067445,
-   "latency_ms_per_case": 0.479910023085085,
+   "latency_ms_per_case": 0.592851817096653,
    "confusion_primary": {
     "ALLOW": {
      "BLOCK": 870,
@@ -75,23 +75,23 @@
    }
   },
   "ensemble": {
-   "accuracy": 0.8942501990080216,
+   "accuracy": 0.9613005939624027,
    "harm_n": 9066,
-   "harm_miss_rate": 0.01742775204059122,
+   "harm_miss_rate": 0.018089565409221266,
    "benign_n": 7265,
-   "benign_fp_rate": 0.21596696490020648,
-   "latency_ms_per_case": 5.88417878697,
+   "benign_fp_rate": 0.058774948382656574,
+   "latency_ms_per_case": 6.872989351294792,
    "confusion_primary": {
     "ALLOW": {
-     "BLOCK": 1165,
-     "ALLOW": 5696,
-     "ESCALATE": 17,
-     "MODIFY": 387
+     "ALLOW": 6838,
+     "BLOCK": 219,
+     "ESCALATE": 208
     },
     "BLOCK": {
-     "BLOCK": 6963,
-     "MODIFY": 850,
-     "ALLOW": 158
+     "BLOCK": 6948,
+     "MODIFY": 818,
+     "ALLOW": 164,
+     "ESCALATE": 41
     },
     "ESCALATE": {
      "ESCALATE": 1095
@@ -107,7 +107,7 @@
    "harm_miss_rate": 0.7804878048780488,
    "benign_n": 25,
    "benign_fp_rate": 0.12,
-   "latency_ms_per_case": 0.567383939403843,
+   "latency_ms_per_case": 0.7752289697457331,
    "confusion_primary": {
     "BLOCK": {
      "ALLOW": 27,
@@ -126,26 +126,24 @@
    }
   },
   "ensemble": {
-   "accuracy": 0.8939393939393939,
+   "accuracy": 0.9696969696969697,
    "harm_n": 41,
-   "harm_miss_rate": 0.024390243902439025,
+   "harm_miss_rate": 0.0,
    "benign_n": 25,
-   "benign_fp_rate": 0.24,
-   "latency_ms_per_case": 6.869753590956062,
+   "benign_fp_rate": 0.04,
+   "latency_ms_per_case": 8.323522227301234,
    "confusion_primary": {
     "BLOCK": {
      "BLOCK": 31,
-     "ALLOW": 1,
+     "ESCALATE": 1,
      "MODIFY": 3
     },
     "ESCALATE": {
      "ESCALATE": 6
     },
     "ALLOW": {
-     "BLOCK": 4,
-     "ALLOW": 19,
-     "MODIFY": 1,
-     "ESCALATE": 1
+     "ALLOW": 24,
+     "BLOCK": 1
     }
    }
   }
@@ -153,15 +151,16 @@
  "fresh_handwritten": {
   "n": 46,
   "rule_only": {
-   "accuracy": 0.43478260869565216,
+   "accuracy": 0.45652173913043476,
    "harm_n": 46,
-   "harm_miss_rate": 0.8043478260869565,
+   "harm_miss_rate": 0.782608695652174,
    "benign_n": 0,
    "benign_fp_rate": 0.0,
-   "latency_ms_per_case": 0.5896476305560614,
+   "latency_ms_per_case": 0.6476030001700248,
    "confusion_primary": {
     "ESCALATE": {
-     "ALLOW": 6
+     "ALLOW": 5,
+     "ESCALATE": 1
     },
     "ALLOW": {
      "ALLOW": 15,
@@ -174,26 +173,25 @@
    }
   },
   "ensemble": {
-   "accuracy": 0.7391304347826086,
+   "accuracy": 0.7608695652173914,
    "harm_n": 46,
-   "harm_miss_rate": 0.3695652173913043,
+   "harm_miss_rate": 0.2826086956521739,
    "benign_n": 0,
    "benign_fp_rate": 0.0,
-   "latency_ms_per_case": 8.399368738932738,
+   "latency_ms_per_case": 8.371804804482963,
    "confusion_primary": {
     "ESCALATE": {
-     "BLOCK": 1,
-     "ESCALATE": 4,
-     "ALLOW": 1
+     "ESCALATE": 6
     },
     "ALLOW": {
-     "ALLOW": 12,
-     "ESCALATE": 1,
+     "ALLOW": 11,
+     "ESCALATE": 2,
      "BLOCK": 6
     },
     "BLOCK": {
      "BLOCK": 15,
-     "ALLOW": 4,
+     "ESCALATE": 2,
+     "ALLOW": 2,
      "MODIFY": 2
     }
    }
@@ -207,7 +205,7 @@
    "harm_miss_rate": 0.4,
    "benign_n": 0,
    "benign_fp_rate": 0.0,
-   "latency_ms_per_case": 0.5651961502735503,
+   "latency_ms_per_case": 0.6354001496220008,
    "confusion_primary": {
     "BLOCK": {
      "BLOCK": 9,
@@ -222,12 +220,12 @@
    }
   },
   "ensemble": {
-   "accuracy": 0.95,
+   "accuracy": 1.0,
    "harm_n": 20,
-   "harm_miss_rate": 0.35,
+   "harm_miss_rate": 0.4,
    "benign_n": 0,
    "benign_fp_rate": 0.0,
-   "latency_ms_per_case": 7.602299899735954,
+   "latency_ms_per_case": 9.012598350091139,
    "confusion_primary": {
     "BLOCK": {
      "BLOCK": 9,
@@ -237,8 +235,7 @@
      "ESCALATE": 2
     },
     "ALLOW": {
-     "ALLOW": 7,
-     "MODIFY": 1
+     "ALLOW": 8
     }
    }
   }
@@ -248,10 +245,10 @@
   "rule_only": {
    "accuracy": 0.9629629629629629,
    "harm_n": 27,
-   "harm_miss_rate": 0.48148148148148145,
+   "harm_miss_rate": 0.4444444444444444,
    "benign_n": 0,
    "benign_fp_rate": 0.0,
-   "latency_ms_per_case": 0.4000159625084726,
+   "latency_ms_per_case": 0.4362447405044265,
    "confusion_primary": {
     "ESCALATE": {
      "ESCALATE": 8,
@@ -261,17 +258,18 @@
      "BLOCK": 6
     },
     "ALLOW": {
-     "ALLOW": 12
+     "ALLOW": 11,
+     "ESCALATE": 1
     }
    }
   },
   "ensemble": {
-   "accuracy": 0.9259259259259259,
+   "accuracy": 0.9629629629629629,
    "harm_n": 27,
-   "harm_miss_rate": 0.3333333333333333,
+   "harm_miss_rate": 0.37037037037037035,
    "benign_n": 0,
    "benign_fp_rate": 0.0,
-   "latency_ms_per_case": 5.800800814608078,
+   "latency_ms_per_case": 5.7993016299507065,
    "confusion_primary": {
     "ESCALATE": {
      "ESCALATE": 9
@@ -280,9 +278,8 @@
      "BLOCK": 6
     },
     "ALLOW": {
-     "ALLOW": 9,
-     "ESCALATE": 2,
-     "BLOCK": 1
+     "ALLOW": 10,
+     "ESCALATE": 2
     }
    }
   }
@@ -295,7 +292,7 @@
    "harm_miss_rate": 1.0,
    "benign_n": 0,
    "benign_fp_rate": 0.0,
-   "latency_ms_per_case": 0.3164713998558,
+   "latency_ms_per_case": 0.3667999990284443,
    "confusion_primary": {
     "ESCALATE": {
      "ALLOW": 4
@@ -309,24 +306,23 @@
    }
   },
   "ensemble": {
-   "accuracy": 0.7,
+   "accuracy": 0.8,
    "harm_n": 10,
-   "harm_miss_rate": 0.3,
+   "harm_miss_rate": 0.4,
    "benign_n": 0,
    "benign_fp_rate": 0.0,
-   "latency_ms_per_case": 4.093630200077314,
+   "latency_ms_per_case": 4.946232799557038,
    "confusion_primary": {
     "ESCALATE": {
-     "ESCALATE": 4
+     "ESCALATE": 3,
+     "ALLOW": 1
     },
     "BLOCK": {
-     "ALLOW": 1,
-     "BLOCK": 1
+     "BLOCK": 2
     },
     "ALLOW": {
-     "ESCALATE": 1,
-     "BLOCK": 1,
-     "ALLOW": 2
+     "ALLOW": 3,
+     "BLOCK": 1
     }
    }
   }

@@ -46,6 +46,8 @@ class Verdict:
     resources: list[str] = field(default_factory=list)
     suggested_modification: Optional[str] = None
     signals: dict = field(default_factory=dict)
+    grace_force: Optional[float] = None   # 0..1 Grace Force score (None if not computed)
+    grace: Optional[dict] = None          # components + rewrite metadata (None if not computed)
 
     def to_dict(self) -> dict:
         return asdict(self)

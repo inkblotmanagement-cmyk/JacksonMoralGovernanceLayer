@@ -112,7 +112,11 @@ class GovernanceService:
         grace = None
         if gf is not None:
             g = getattr(verdict, "grace", None) or {}
-            grace = {"score": float(gf), "threshold": g.get("threshold"), "passed": g.get("passed"),
+            thr = g.get("threshold")
+            passed = g.get("passed")
+            if passed is None and thr is not None:
+                passed = float(gf) >= float(thr)
+            grace = {"score": float(gf), "threshold": thr, "passed": passed,
                      "rewritten": g.get("rewritten"),
                      "components": g.get("components", {}) if isinstance(g.get("components"), dict) else {}}
         return {

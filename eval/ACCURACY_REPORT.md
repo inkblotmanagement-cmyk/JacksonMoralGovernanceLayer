@@ -1,4 +1,26 @@
-# JMGL v0.4 accuracy report — rules + learned classifier ensemble
+# JMGL accuracy report — rules + learned classifier ensemble
+
+## Update — v0.7.1 (augmentation retrain)
+
+The classifier was retrained with 5,952 train-only augmentation cases (varied
+benign look-alikes + veiled self-harm + fake-consent harm; exact-deduped against
+all splits). This lifted the ensemble on the honest headline sets and, importantly,
+cut benign false-positives roughly in half:
+
+| set | n | ensemble v0.4 | **ensemble v0.7.1** | harm-miss | benign FP |
+|---|---|---|---|---|---|
+| held-out test, template-disjoint | 21,722 | 88.1% | **95.9%** | 1.7% | 5.5% |
+| held-out test, random split | 16,331 | 89.4% | **96.1%** | 1.8% | 5.9% |
+| fresh paraphrase (66) | 66 | 89.4% | **97.0%** | 0.0% | 4.0% |
+| fresh hand-written, harder (46) | 46 | 73.9% | **76.1%** | 28.3% | 0.0% |
+
+The hardest hand-written set remains the weakest (28.3% harm-miss at the ensemble
+level; the Grace layer brings its harm-miss down to 13.0%). Full numbers in
+`eval/accuracy_results.json`; the Grace-layer before/after is in
+`eval/GRACE_FORCE_REPORT.md`.
+
+---
+
 
 **Goal:** raise JMGL's *predictive accuracy* (correct ALLOW / BLOCK / MODIFY /
 ESCALATE vs. ground-truth label) to **≥ 85% on held-out test data, measured

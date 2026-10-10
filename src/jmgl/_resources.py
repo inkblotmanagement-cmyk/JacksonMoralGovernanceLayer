@@ -1,7 +1,8 @@
 """Locate JMGL data files in a source checkout *and* in an installed wheel.
 
 Resolution order (first existing path wins):
-  1. An explicit environment variable (JMGL_LAWS_PATH, JMGL_JUDGE_SCHEMA_PATH, JMGL_MODEL_DIR).
+  1. An explicit environment variable (JMGL_LAWS_PATH, JMGL_GRACE_CONFIG_PATH,
+     JMGL_JUDGE_SCHEMA_PATH, JMGL_MODEL_DIR).
   2. The repository layout (spec/laws.json, eval/model/...), used by a git checkout
      or an editable install.
   3. Package data bundled into the wheel under jmgl/data/ (see pyproject.toml).
@@ -28,6 +29,11 @@ def _first(env: str, *candidates: Path) -> Path:
 
 def laws_path() -> Path:
     return _first("JMGL_LAWS_PATH", _REPO_ROOT / "spec" / "laws.json", _DATA_DIR / "laws.json")
+
+
+def grace_config_path() -> Path:
+    return _first("JMGL_GRACE_CONFIG_PATH", _REPO_ROOT / "spec" / "grace_force.json",
+                  _DATA_DIR / "grace_force.json")
 
 
 def judge_schema_path() -> Path:

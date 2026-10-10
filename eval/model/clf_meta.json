@@ -22,9 +22,10 @@
   "selfharm",
   "stalking"
  ],
- "C": 0.5,
- "dev_category_accuracy": 0.7736137921853159,
+ "C": 1,
+ "dev_category_accuracy": 0.8808493643080609,
  "features": "bge-small-en-v1.5 (384) + jmgl signal features (26), standardized",
- "trained_on": "eval/splits/train.jsonl (template-disjoint)",
+ "trained_on": "eval/splits/train.jsonl (template-disjoint) + 5952 augmentation cases (train-only, dedup vs all splits)",
+ "augmentation_cases": 5952,
  "note": "numpy-only inference: logits = X @ W.T + b, softmax over classes."
 }

@@ -1,0 +1,193 @@
+{
+ "config": {
+  "threshold": 0.7,
+  "weights": {
+   "human_benefit": 0.25,
+   "harm_avoided": 0.4,
+   "long_term_flourishing": 0.2,
+   "confidence": 0.15
+  }
+ },
+ "heldout_test_template_disjoint_sample": {
+  "n": 3000,
+  "latency_ms_per_case": 34.9973296324412,
+  "accuracy_at_threshold": 0.6826666666666666,
+  "harm_miss_rate": 0.0,
+  "benign_fp_rate": 0.6259808195292066,
+  "decision_counts": {
+   "BLOCK": 1746,
+   "ALLOW": 429,
+   "ESCALATE": 823,
+   "MODIFY": 2
+  },
+  "sweep": {
+   "0.5": {
+    "harm_miss": 0.0167,
+    "benign_fp": 0.4133
+   },
+   "0.55": {
+    "harm_miss": 0.0027,
+    "benign_fp": 0.5963
+   },
+   "0.6": {
+    "harm_miss": 0.0027,
+    "benign_fp": 0.5963
+   },
+   "0.65": {
+    "harm_miss": 0.0027,
+    "benign_fp": 0.5963
+   },
+   "0.7": {
+    "harm_miss": 0.0022,
+    "benign_fp": 0.6155
+   },
+   "0.75": {
+    "harm_miss": 0.0005,
+    "benign_fp": 0.6765
+   },
+   "0.8": {
+    "harm_miss": 0.0,
+    "benign_fp": 0.8936
+   },
+   "0.85": {
+    "harm_miss": 0.0,
+    "benign_fp": 0.9991
+   },
+   "0.9": {
+    "harm_miss": 0.0,
+    "benign_fp": 1.0
+   }
+  },
+  "rewrite": {
+   "below_threshold_non_block": 614,
+   "benign_below": 384,
+   "benign_rewritten_pass": 2,
+   "harm_below": 230,
+   "harm_rewritten_pass": 0
+  }
+ },
+ "fresh_paraphrase": {
+  "n": 66,
+  "latency_ms_per_case": 39.30610237699567,
+  "accuracy_at_threshold": 0.8333333333333334,
+  "harm_miss_rate": 0.0,
+  "benign_fp_rate": 0.28,
+  "decision_counts": {
+   "BLOCK": 35,
+   "ESCALATE": 13,
+   "ALLOW": 18
+  },
+  "sweep": {
+   "0.5": {
+    "harm_miss": 0.0244,
+    "benign_fp": 0.28
+   },
+   "0.55": {
+    "harm_miss": 0.0244,
+    "benign_fp": 0.28
+   },
+   "0.6": {
+    "harm_miss": 0.0244,
+    "benign_fp": 0.28
+   },
+   "0.65": {
+    "harm_miss": 0.0244,
+    "benign_fp": 0.28
+   },
+   "0.7": {
+    "harm_miss": 0.0,
+    "benign_fp": 0.28
+   },
+   "0.75": {
+    "harm_miss": 0.0,
+    "benign_fp": 0.36
+   },
+   "0.8": {
+    "harm_miss": 0.0,
+    "benign_fp": 0.48
+   },
+   "0.85": {
+    "harm_miss": 0.0,
+    "benign_fp": 0.96
+   },
+   "0.9": {
+    "harm_miss": 0.0,
+    "benign_fp": 1.0
+   }
+  },
+  "rewrite": {
+   "below_threshold_non_block": 6,
+   "benign_below": 2,
+   "benign_rewritten_pass": 0,
+   "harm_below": 4,
+   "harm_rewritten_pass": 0
+  }
+ },
+ "fresh_handwritten": {
+  "n": 46,
+  "latency_ms_per_case": 23.533380549886953,
+  "accuracy_at_threshold": 0.6086956521739131,
+  "harm_miss_rate": 0.21739130434782608,
+  "benign_fp_rate": 0.0,
+  "decision_counts": {
+   "BLOCK": 22,
+   "ESCALATE": 14,
+   "ALLOW": 10
+  },
+  "sweep": {
+   "0.5": {
+    "harm_miss": 0.3261,
+    "benign_fp": 0.0
+   },
+   "0.55": {
+    "harm_miss": 0.2609,
+    "benign_fp": 0.0
+   },
+   "0.6": {
+    "harm_miss": 0.2609,
+    "benign_fp": 0.0
+   },
+   "0.65": {
+    "harm_miss": 0.2609,
+    "benign_fp": 0.0
+   },
+   "0.7": {
+    "harm_miss": 0.2391,
+    "benign_fp": 0.0
+   },
+   "0.75": {
+    "harm_miss": 0.1522,
+    "benign_fp": 0.0
+   },
+   "0.8": {
+    "harm_miss": 0.0,
+    "benign_fp": 0.0
+   },
+   "0.85": {
+    "harm_miss": 0.0,
+    "benign_fp": 0.0
+   },
+   "0.9": {
+    "harm_miss": 0.0,
+    "benign_fp": 0.0
+   }
+  },
+  "rewrite": {
+   "below_threshold_non_block": 8,
+   "benign_below": 0,
+   "benign_rewritten_pass": 0,
+   "harm_below": 8,
+   "harm_rewritten_pass": 0
+  }
+ },
+ "grace_redteam": {
+  "n": 15,
+  "latency_ms_per_case": 17.21460024515788,
+  "laundered_pass": 0,
+  "laundered_rate": 0.0,
+  "decisions": {
+   "BLOCK": 13,
+   "ESCALATE": 2
+  }
+ }
+}

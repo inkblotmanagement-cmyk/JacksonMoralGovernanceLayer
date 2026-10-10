@@ -28,8 +28,12 @@ def main(argv=None) -> int:
     p.add_argument("--json", action="store_true")
     p.add_argument("--audit", default=None, help="append JSONL audit record to this path")
     p.add_argument("--ensemble", action="store_true", help="use rules + learned classifier (v0.4) instead of rules only")
+    p.add_argument("--grace", action="store_true", help="use Grace Force scoring + 0.7 pass line + rewrite path (v0.7)")
     a = p.parse_args(argv)
-    if a.ensemble:
+    if a.grace:
+        from .grace import evaluate_grace_force
+        v = evaluate_grace_force(a.request, {"history": a.history}, audit_path=a.audit)
+    elif a.ensemble:
         from .ensemble import evaluate_action_ensemble
         v = evaluate_action_ensemble(a.request, {"history": a.history}, audit_path=a.audit)
     else:
