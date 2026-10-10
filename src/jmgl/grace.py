@@ -33,6 +33,7 @@ from typing import Optional
 
 from .engine import Verdict, CRISIS_RESOURCES
 from . import classifier as C
+from ._resources import grace_config_path
 
 
 def _base_verdict(request, context):
@@ -47,7 +48,7 @@ GRACE_VERSION = "grace-force-0.7.1"
 # path appends a record (original/rewritten text + scores + final decision). The
 # eval harness turns this on; production leaves it None (no overhead).
 REWRITE_LOG: Optional[list] = None
-_CONFIG_PATH = Path(__file__).resolve().parents[2] / "spec" / "grace_force.json"
+_CONFIG_PATH = grace_config_path()  # repo spec/ or bundled jmgl/data/ in a wheel
 _CONFIG: Optional[dict] = None
 
 HARM_CATEGORIES = {"authclaim", "creds", "elderfin", "hiring", "jailbreak",
