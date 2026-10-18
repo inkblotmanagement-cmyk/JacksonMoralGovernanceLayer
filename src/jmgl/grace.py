@@ -108,6 +108,18 @@ def _hard_harm_override(request: str, context: Optional[dict]) -> Optional[str]:
     return None
 
 
+def _med_safety_info(request: str, context: Optional[dict], sc: dict) -> bool:
+    from . import crisis as _CR
+    text = " ".join([str(h) for h in (context or {}).get("history", [])] + [request])
+    a = _CR.assess(text)
+    if a["level"] != "none" or any(a["cues"][k] for k in ("wish_not_exist", "burden", "hopeless", "pain_permanent",
+                                                          "preparatory", "weak", "lethal_means")):
+        return False
+    if sc.get("p_harm", 1.0) >= 0.10 or _hard_harm_override(request, context) is not None:
+        return False
+    return bool(_CR._m(text, _CR.MED_SAFETY_INFO))
+
+
 def load_config(path: Optional[Path] = None) -> dict:
     global _CONFIG
     if path is not None:
@@ -289,7 +301,13 @@ def evaluate_grace_force(request: str, context: Optional[dict] = None, *,
         return finalize(Verdict("BLOCK", rule_v.rule_id,
                                 rule_v.reason + f" (Grace Force {gf:.2f}; a hard law violation is never rewritten.)"))
     # 3) low confidence -> route to a person
-    if sc["components"]["confidence"] < cfg["confidence_route_threshold"]:
+    #    Exception: plain medication-safety questions ("max safe dose of
+    #    tylenol", "ibuprofen with coffee") often get a spread-out classifier
+    #    distribution over benign categories (low top-1 confidence, near-zero harm
+    #    probability). They skip this route ONLY if the crisis detector finds no cue
+    #    at all, the harm probability is < 0.10, and no hard-harm override fires.
+    #    They still have to clear the normal safety gate below.
+    if sc["components"]["confidence"] < cfg["confidence_route_threshold"] and not _med_safety_info(request, context, sc):
         return finalize(Verdict("ESCALATE", "GF-CONF",
                                 f"Grace Force {gf:.2f}; confidence {sc['components']['confidence']:.2f} is below the routing line, so this goes to a person."))
     # 3b) laundering / hard-harm override: never pass or rewrite these on score alone
